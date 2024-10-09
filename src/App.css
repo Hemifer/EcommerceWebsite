@@ -1,0 +1,83 @@
+/* Global app styling */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9; /* Light background for the app */
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the container takes at least the full viewport height */
+}
+
+/* This allows the main content to grow and push the footer down */
+.main-content {
+  flex: 1; /* Take up remaining space */
+}
+
+
+/* Navbar styling */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+
+nav h2 {
+  margin: 0;
+  color: #fff;
+}
+
+nav .navItems {
+  display: flex;
+  align-items: center;
+}
+
+nav .cart {
+  font-size: 1.2rem;
+  margin-right: 20px;
+}
+
+nav .signupButton, nav .loginButton {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+nav .signupButton:hover, nav .loginButton:hover {
+  background-color: #0056b3;
+}
+
+/* HomePage styling */
+.homepage-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.homepage-header {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+

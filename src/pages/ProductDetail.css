@@ -1,0 +1,57 @@
+.detail-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.product-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+
+.add-to-cart-button {
+  margin-top: 10px;
+  padding: 20px 30px;
+  background-color: green;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Container for the buttons */
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Position buttons on the left and right */
+  margin: 100px 0 10px; /* Add margin to lower the buttons by 100px */
+}
+
+.back-to-products-button,
+.back-to-home-button {
+  padding: 10px 20px; /* Set consistent padding */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold; /* Optional: Ensure text is bold for emphasis */
+  font-size: 16px; /* Ensure consistent font size */
+  line-height: 1; /* Normalize line height */
+  height: auto; /* Ensure height is determined by padding and content */
+}
+
+.back-to-products-button {
+  background-color: #1FC180;
+  color: white;
+  margin-right: 40px;
+}
+
+.back-to-home-button {
+  background-color: black;
+  color: white;
+  margin-left: 40px;
+}
+
+  
+  
+  

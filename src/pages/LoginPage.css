@@ -1,0 +1,55 @@
+/* LoginPage.css */
+
+.container {
+    padding: 40px;
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: black; /* Set background color to match theme */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white; /* Text color for better visibility */
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: purple; /* Header color */
+}
+
+.error {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.button {
+    padding: 10px;
+    background-color: #007bff; /* Button color */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}

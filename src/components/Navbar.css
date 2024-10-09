@@ -1,0 +1,130 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    width: 98.7%; /* Set width to 98.7% to prevent overflow */
+    background-color: #C11F60;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+  
+.cart-container {
+    position: relative; /* Position relative to control dropdown */
+}
+  
+.cart-button {
+    font-size: 1.5rem;
+    margin-right: 20px;
+    padding: 10px 15px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+ }
+  
+.cart-dropdown {
+    position: absolute; /* Change this to absolute for dropdown */
+    top: 40px; /* Adjust this value based on button height */
+    right: 0; /* Align to the right */
+    width: 200px;
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    padding: 10px;
+}
+  
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+  
+.remove-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+  
+.empty-cart {
+    text-align: center;
+    padding: 10px 0;
+    color: #999;
+}
+  
+.signup-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 40px;
+}
+  
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    max-width: 80px; /* Restrict logo width */
+    max-height: 50px; /* Restrict logo height */
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.title {
+    color: gold;
+}
+
+.nav-items {
+    display: flex;
+    align-items: center;
+    position: relative; 
+}
+.products-button {
+    padding: 10px 15px;
+    background-color: #1FC180;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: background-color 0.3s; /* Optional: add a transition for hover effect */
+}
+.categories-dropdown {
+    position: absolute;
+    top: 40px; /* Adjust according to your navbar height */
+    left: 0; 
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 150px; /* Adjust width as necessary */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.category-button {
+    display: block;
+    padding: 10px;
+    color: black;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    width: 100%; /* Full width for buttons */
+}
+
+.category-button:hover {
+    background-color: #f0f0f0; /* Hover effect */
+}

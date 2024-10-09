@@ -1,0 +1,29 @@
+.footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  width: 100%; /* Ensure it takes the full width */
+  position: fixed; /* Keep it at the bottom */
+  bottom: 0; /* Position at the bottom of the viewport */
+  left: 0; /* Align to the left */
+  z-index: 10; /* Ensure it appears above other content */
+}
+
+.footer-text {
+  margin-bottom: 10px;
+}
+
+.footer-help-button {
+  padding: 7px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  float: left;
+}
+
+
+  
+  

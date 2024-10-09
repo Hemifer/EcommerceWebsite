@@ -1,0 +1,51 @@
+/* src/pages/ToysPage.css */
+
+.toys-page {
+    padding: 20px;
+}
+
+.products-header {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center; /* Center the header */
+}
+
+.products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Align items evenly */
+}
+
+.product-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    text-align: center;
+    overflow: hidden; /* Hide any overflow content */
+}
+
+.product-image {
+    max-width: 100%; /* Ensure image doesn't exceed card width */
+    max-height: 150px; /* Set a max height for the image */
+    object-fit: contain; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Space between image and product name */
+}
+
+.back-to-home-button {
+    margin: 80px auto;
+    display: block;
+    padding: 10px 15px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.back-to-home-button:hover {
+    background-color: #0056b3;
+}
+
+  
