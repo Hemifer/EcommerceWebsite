@@ -13,6 +13,7 @@ import { UserProvider } from './context/UserContext';
 import Footer from './components/Footer';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
+import CheckoutPage from './pages/CheckoutPage'
 
 function App() {
   const [showFooter, setShowFooter] = useState(false);
@@ -59,8 +60,9 @@ function App() {
             <Route path="/kitchenware" element={<KitchenwarePage />} />
             <Route path="/toys" element={<ToysPage />} />
             <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
           </Routes>
-          {showFooter && <Footer />} {/* Show footer only if at bottom */}
+          {showFooter && <Footer />}
         </div>
       </CartProvider>
     </UserProvider>
