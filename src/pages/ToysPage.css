@@ -23,6 +23,7 @@
     width: 200px;
     text-align: center;
     overflow: hidden; /* Hide any overflow content */
+    cursor: pointer; /* Added cursor: pointer here */
 }
 
 .product-image {
@@ -44,8 +45,5 @@
     text-align: center;
 }
 
-.back-to-home-button:hover {
-    background-color: #0056b3;
-}
 
   

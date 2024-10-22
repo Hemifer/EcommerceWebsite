@@ -7,8 +7,9 @@ export const toyProducts = [
   { id: 101, name: "Lego Set", price: 49.99, image: "https://via.placeholder.com/150", description: "A fun Lego set for all ages." },
   { id: 102, name: "Barbie Doll", price: 29.99, image: "https://via.placeholder.com/150", description: "Classic Barbie doll." },
   { id: 103, name: "Hot Wheels", price: 19.99, image: "https://via.placeholder.com/150", description: "Hot Wheels cars set." },
-  { id: 104, name: "Plushie", price: 15.99, image: "https://via.placeholder.com/150", description: "A soft and cuddly plush toy." },
+  { id: 104, name: "MLP Plushie", price: 15.99, image: "https://via.placeholder.com/150", description: "A soft and cuddly plush toy, branded from the popular kids show." }, 
 ];
+
 
 function ToysPage() {
   const navigate = useNavigate();

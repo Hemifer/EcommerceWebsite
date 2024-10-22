@@ -30,6 +30,7 @@ export const kitchenwareProducts = [
   { id: 20, name: "Dish Rack", price: 29.99, image: "https://via.placeholder.com/150", description: "Keeps your dishes organized and dry." },  
 ];
 
+
 function KitchenwarePage() {
   const navigate = useNavigate();
   const { cartItems, addToCart } = useContext(CartContext);

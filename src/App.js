@@ -8,6 +8,8 @@ import LoginPage from './pages/LoginPage';
 import KitchenwarePage from './pages/KitchenwarePage';
 import ToysPage from './pages/ToysPage';
 import ProductDetail from './pages/ProductDetail';
+import CheckoutPage from './pages/CheckoutPage'; // Import CheckoutPage
+import AccountPage from './pages/AccountPage';
 import { CartProvider, CartContext } from './CartContext';
 import { UserProvider } from './context/UserContext';
 import Footer from './components/Footer';
@@ -20,33 +22,31 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50; // Adding a small offset
+      const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
       setShowFooter(atBottom);
     };
-  
-    // Check if the document is already scrolled down enough to show footer
-    handleScroll(); 
-  
+
+    handleScroll();
+
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("User is authenticated:", user.uid); // Debugging log
-        loadCart(); // Load cart items for authenticated user
+        console.log("User is authenticated:", user.uid);
+        loadCart();
       } else {
-        console.log("User is not authenticated"); // Debugging log
-        setCartItems([]); // Clear cart when user signs out
+        console.log("User is not authenticated");
+        setCartItems([]);
       }
     });
 
-    return () => unsubscribe(); // Cleanup listener on unmount
-  }, [loadCart, setCartItems]); // Added setCartItems as a dependency
+    return () => unsubscribe();
+  }, [loadCart, setCartItems]);
 
   return (
     <UserProvider>
@@ -59,8 +59,11 @@ function App() {
             <Route path="/kitchenware" element={<KitchenwarePage />} />
             <Route path="/toys" element={<ToysPage />} />
             <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/checkout" element={<CheckoutPage />} /> {/* Add CheckoutPage route */}
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/account" element={<AccountPage />} />
           </Routes>
-          {showFooter && <Footer />} {/* Show footer only if at bottom */}
+          {showFooter && <Footer />}
         </div>
       </CartProvider>
     </UserProvider>

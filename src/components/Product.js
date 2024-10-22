@@ -7,7 +7,7 @@ function Product({ product }) {
 
   // Navigate to the product detail page on click
   const handleProductClick = () => {
-    navigate(`/products/${product.id}`);
+    navigate(`/products/${product.id}`); // Fixed here
   };
 
   return (
@@ -40,6 +40,9 @@ const styles = {
 };
 
 export default Product;
+
+
+
 
 
 

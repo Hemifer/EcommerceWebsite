@@ -71,23 +71,32 @@
     cursor: pointer;
     margin-right: 40px;
 }
+
+.sign-out-button {
+    background-color: #f44336; /* Red color for the sign out button */
+    color: white; /* White text color */
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px; /* Padding for the button */
+    cursor: pointer; /* Cursor change on hover */
+    width: 100%; /* Full width */
+    margin-top: 10px; /* Space above the button */
+}
   
 .logo-container {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
-
 .logo {
     max-width: 80px; /* Restrict logo width */
     max-height: 50px; /* Restrict logo height */
     margin-right: 10px;
     object-fit: contain;
 }
-
 .title {
     color: gold;
 }
-
 .nav-items {
     display: flex;
     align-items: center;
@@ -113,7 +122,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
-
 .category-button {
     display: block;
     padding: 10px;
@@ -124,7 +132,60 @@
     cursor: pointer;
     width: 100%; /* Full width for buttons */
 }
-
 .category-button:hover {
     background-color: #f0f0f0; /* Hover effect */
 }
+
+.profile-picture {
+    cursor: pointer;
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%;
+    overflow: hidden; /* Ensure image fits within the circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .blank-profile {
+    width: 100%;
+    height: 100%;
+    background-color: #ccc; /* Placeholder color */
+  }
+/* Dropdown container for user info */
+.user-info-dropdown {
+    position: absolute;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 15px;
+    left: -60px; /* Adjust as necessary */
+ /* Adjust this value to move the dropdown left or right */
+    transform: translateX(-50%); /* Center the dropdown relative to the profile picture */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensure dropdown appears above other elements */
+  }
+  
+  .account-container {
+    position: relative; /* Positioning for dropdown */
+  }
+  
+  .account-title {
+    text-align: center; /* Center the text */
+    color: black; /* Set text color to black */
+    margin: 0; /* Remove default margin */
+    padding-bottom: 5px; /* Space between title and content */
+}
+
+.account-title {
+    color: black; /* Ensure the account title is also black */
+}
+
+  
