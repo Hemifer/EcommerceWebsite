@@ -1,0 +1,110 @@
+[debug] [2024-10-31T03:25:24.024Z] ----------------------------------------------------------------------
+[debug] [2024-10-31T03:25:24.026Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\pisti\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-10-31T03:25:24.026Z] CLI Version:   13.23.1
+[debug] [2024-10-31T03:25:24.026Z] Platform:      win32
+[debug] [2024-10-31T03:25:24.026Z] Node Version:  v20.11.0
+[debug] [2024-10-31T03:25:24.026Z] Time:          Wed Oct 30 2024 23:25:24 GMT-0400 (Eastern Daylight Saving Time)
+[debug] [2024-10-31T03:25:24.026Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-10-31T03:25:24.030Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-10-31T03:25:24.031Z] > authorizing via signed-in user (Pistillityler@icloud.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\pisti\OneDrive\Desktop\ecommerce-website
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-10-31T03:26:16.722Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:16.723Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:16.725Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-10-31T03:26:17.381Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-10-31T03:26:17.381Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project hemimerce (HemiMerce) 
+[info] 
+=== Dataconnect Setup
+[debug] [2024-10-31T03:26:20.765Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:20.765Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:20.766Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/hemimerce/billingInfo [none]
+[debug] [2024-10-31T03:26:21.067Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/hemimerce/billingInfo 200
+[debug] [2024-10-31T03:26:21.067Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/hemimerce/billingInfo {"name":"projects/hemimerce/billingInfo","projectId":"hemimerce","billingAccountName":"","billingEnabled":false}
+[info] i  dataconnect: ensuring required API sqladmin.googleapis.com is enabled... 
+[debug] [2024-10-31T03:26:21.068Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:21.068Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:21.068Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com [none]
+[debug] [2024-10-31T03:26:21.068Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com x-goog-quota-user=projects/hemimerce
+[debug] [2024-10-31T03:26:21.509Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com 200
+[debug] [2024-10-31T03:26:21.509Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com [omitted]
+[warn] !  dataconnect: missing required API sqladmin.googleapis.com. Enabling now... 
+[debug] [2024-10-31T03:26:21.510Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:21.510Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:21.511Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com:enable [none]
+[debug] [2024-10-31T03:26:21.511Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com:enable x-goog-quota-user=projects/hemimerce
+[debug] [2024-10-31T03:26:22.149Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com:enable 200
+[debug] [2024-10-31T03:26:22.149Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com:enable [omitted]
+[debug] [2024-10-31T03:26:32.168Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:32.169Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:32.169Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com [none]
+[debug] [2024-10-31T03:26:32.169Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com x-goog-quota-user=projects/hemimerce
+[debug] [2024-10-31T03:26:32.552Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com 200
+[debug] [2024-10-31T03:26:32.552Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/sqladmin.googleapis.com [omitted]
+[info] +  dataconnect: required API sqladmin.googleapis.com is enabled 
+[info] +  Wrote dataconnect\dataconnect.yaml 
+[info] +  Wrote dataconnect\schema\schema.gql 
+[info] +  Wrote dataconnect\connector\connector.yaml 
+[info] +  Wrote dataconnect\connector\queries.gql 
+[info] +  Wrote dataconnect\connector\mutations.gql 
+[info] +  Detected WEB app in directory C:\Users\pisti\OneDrive\Desktop\ecommerce-website 
+[info] i  Wrote new config to C:\Users\pisti\OneDrive\Desktop\ecommerce-website\dataconnect\connector/connector.yaml 
+[info] i  dataconnect: downloading dataconnect-emulator-1.6.0.exe... {"metadata":{"emulator":{"name":"dataconnect"},"message":"downloading dataconnect-emulator-1.6.0.exe..."}}
+[debug] [2024-10-31T03:26:42.911Z] >>> [apiv2][query] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.6.0 
+[debug] [2024-10-31T03:26:43.101Z] <<< [apiv2][status] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.6.0 200
+[debug] [2024-10-31T03:26:43.101Z] <<< [apiv2][body] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.6.0 [stream]
+[info] I1030 23:26:45.358080   17004 codegen.go:82] [connector "default" javascriptSdk] Generating sources into "C:\\Users\\pisti\\OneDrive\\Desktop\\ecommerce-website\\dataconnect-generated\\js\\default-connector"
+I1030 23:26:45.359104   17004 generate.go:40] Generated all sources. Writing them to disk...
+I1030 23:26:45.362964   17004 collector.go:107] connector "default" javascriptSdk wrote into "C:\\Users\\pisti\\OneDrive\\Desktop\\ecommerce-website\\dataconnect-generated\\js\\default-connector"
+Generated sources: index.d.ts [264B] esm\index.esm.js [190B] esm\package.json [17B] index.cjs.js [231B] package.json [623B] 
+I1030 23:26:45.390251   17004 installsdk.go:76] Running command: C:\Program Files\nodejs\npm.cmd install file:dataconnect-generated\js\default-connector
+
+[info] i  Generated SDK code for default 
+[info] +  If you'd like to add more generated SDKs to your app your later, run firebase init dataconnect:sdk again 
+[info] i  If you'd like to provision a CloudSQL Postgres instance on the Firebase Data Connect no-cost trial:
+1. Please upgrade to the pay-as-you-go (Blaze) billing plan. Visit the following page:
+     https://console.firebase.google.com/project/hemimerce/usage/details
+2. Run firebase init dataconnect again to configure the Cloud SQL instance.
+3. Run firebase deploy --only dataconnect to deploy your Data Connect service. 
+[info] 
+=== Firestore Setup
+[debug] [2024-10-31T03:26:49.093Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:49.094Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:49.094Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/firestore.googleapis.com [none]
+[debug] [2024-10-31T03:26:49.094Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/firestore.googleapis.com x-goog-quota-user=projects/hemimerce
+[debug] [2024-10-31T03:26:49.479Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/firestore.googleapis.com 200
+[debug] [2024-10-31T03:26:49.480Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/hemimerce/services/firestore.googleapis.com [omitted]
+[debug] [2024-10-31T03:26:49.480Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:49.480Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:26:49.481Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/hemimerce/databases/(default) [none]
+[debug] [2024-10-31T03:26:49.749Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/hemimerce/databases/(default) 404
+[debug] [2024-10-31T03:26:49.750Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/hemimerce/databases/(default) {"error":{"code":404,"message":"Project 'hemimerce' or database '(default)' does not exist.","status":"NOT_FOUND"}}
+[debug] [2024-10-31T03:26:49.750Z] error getting database type:  Request to https://firestore.googleapis.com/v1/projects/hemimerce/databases/(default) had HTTP Error: 404, Project 'hemimerce' or database '(default)' does not exist. {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":404,"message":"Project 'hemimerce' or database '(default)' does not exist.","status":"NOT_FOUND"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://firestore.googleapis.com/v1/projects/hemimerce/databases/(default) had HTTP Error: 404, Project 'hemimerce' or database '(default)' does not exist.","status":404}
+[info] (default) does not exist in project hemimerce.
+[debug] [2024-10-31T03:26:49.752Z] database_type: DATABASE_DOES_NOT_EXIST
+[debug] [2024-10-31T03:27:08.987Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:27:08.987Z] Checked if tokens are valid: true, expires at: 1730348498599
+[debug] [2024-10-31T03:27:08.987Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/hemimerce/databases/HemiMerce [none]
+[debug] [2024-10-31T03:27:09.235Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/hemimerce/databases/HemiMerce 404
+[debug] [2024-10-31T03:27:09.236Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/hemimerce/databases/HemiMerce {"error":{"code":404,"message":"Project 'hemimerce' or database 'HemiMerce' does not exist.","status":"NOT_FOUND"}}
+[debug] [2024-10-31T03:27:09.236Z] error getting database type:  Request to https://firestore.googleapis.com/v1/projects/hemimerce/databases/HemiMerce had HTTP Error: 404, Project 'hemimerce' or database 'HemiMerce' does not exist. {"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":404,"message":"Project 'hemimerce' or database 'HemiMerce' does not exist.","status":"NOT_FOUND"}},"response":{"statusCode":404}},"exit":1,"message":"Request to https://firestore.googleapis.com/v1/projects/hemimerce/databases/HemiMerce had HTTP Error: 404, Project 'hemimerce' or database 'HemiMerce' does not exist.","status":404}
+[info] HemiMerce does not exist in project hemimerce.
+[debug] [2024-10-31T03:27:09.236Z] database_type: DATABASE_DOES_NOT_EXIST

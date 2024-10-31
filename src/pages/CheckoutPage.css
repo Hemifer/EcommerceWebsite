@@ -8,8 +8,8 @@
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  max-height: 475px;  /* Set the maximum height */
-  overflow-y: auto;   /* Enable vertical scrolling when height exceeds 350px */
+  max-height: 475px;  
+  overflow-y: auto;   
 }
 
 /* Checkout form styling */
@@ -27,8 +27,8 @@
   margin: 0;
   margin-bottom: 20px;
   border-bottom: 1px solid #ddd;
-  max-height: 300px; /* Limit height for items */
-  overflow-y: auto;  /* Scrollbar inside the items container */
+  max-height: 300px; 
+  overflow-y: auto;  
 }
 
 /* Each item in the list */
@@ -40,7 +40,6 @@
   border-bottom: 1px solid #f0f0f0;
 }
 
-/* Other styling remains the same */
 .checkout-items li span {
   flex: 1;
   text-align: left;
@@ -67,18 +66,25 @@
   border-radius: 5px;
 }
 
-button[type="submit"] {
+/* Main action button styling */
+.checkout-page-submit-button {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: #1FC180;
+  background-color: #1FC180; /* Primary button color */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s; /* Smooth hover transition */
 }
 
-button[type="submit"]:disabled {
-  background-color: #aaa;
+.checkout-page-submit-button:hover {
+  background-color: #17a45a; /* Darker shade on hover */
+}
+
+.checkout-page-submit-button:disabled {
+  background-color: #aaa; /* Disabled button style */
 }
 
 .error-message {
@@ -86,39 +92,54 @@ button[type="submit"]:disabled {
   margin-top: 10px;
 }
 
-/* Thank-you message styling */
-.thank-you-message {
-  text-align: center;
-  margin: 20px;
-  padding: 20px;
-  border: 2px solid #f0ad4e;
-  border-radius: 8px;
-  background-color: #fff3cd;
-  color: #856404;
+/* Overlay styling */
+.checkout-page-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Ensure it's above other content */
 }
 
-.button-container {
+/* Thank-you message styling */
+.checkout-page-thank-you-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+}
+
+/* Button container styling */
+.checkout-page-button-container {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
   width: 100%;
 }
 
-.button-container button {
+.checkout-page-button-container button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #5bc0de;
+  background-color: #5bc0de; /* Secondary button color */
   color: white;
   cursor: pointer;
   font-size: 16px;
   flex: 1;
   margin: 0 10px;
+  transition: background-color 0.3s; /* Smooth hover transition */
 }
 
-.button-container button:hover {
-  background-color: #31b0d5;
+.checkout-page-button-container button:hover {
+  background-color: #31b0d5; /* Darker shade on hover */
 }
+
+
 
 
   

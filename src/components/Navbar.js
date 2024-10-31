@@ -1,53 +1,63 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { CartContext } from '../CartContext';
+import { useCart } from '../context/CartContext';
 import { useUser } from '../context/UserContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import logo from '../assets/logo.jpg';
+import UserDropdown from './UserDropdown';
 import './Navbar.css';
 
 function Navbar() {
-  const { cartItems, getCartCount, removeFromCart } = useContext(CartContext);
+  const { cartItems, getCartCount, removeFromCart } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
-  const currentUser = useUser();
+  const { currentUser } = useUser();
   const [cartVisible, setCartVisible] = useState(false);
   const [categoriesVisible, setCategoriesVisible] = useState(false);
-  const [userInfoVisible, setUserInfoVisible] = useState(false); // State to manage user info dropdown visibility
+  const [userInfoVisible, setUserInfoVisible] = useState(false);
 
-  const handleSignUp = () => {
+  const handleSignUp = useCallback(() => {
     navigate('/signup');
-  };
+  }, [navigate]);
 
-  const toggleCart = () => {
-    setCartVisible(!cartVisible);
-  };
+  const toggleCart = useCallback(() => {
+    setCartVisible((prev) => !prev);
+    if (!cartVisible) {
+      setUserInfoVisible(false);
+    }
+  }, [cartVisible]);
 
-  const toggleCategories = () => {
-    setCategoriesVisible(!categoriesVisible);
-  };
+  const toggleCategories = useCallback(() => {
+    setCategoriesVisible((prev) => !prev);
+  }, []);
 
-  const handleSignOut = async () => {
+  const handleSignOut = useCallback(async () => {
     try {
       await signOut(auth);
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
     }
-  };
+  }, [navigate]);
 
-  const handleCheckout = () => {
-    navigate('/checkout'); // Navigate to the checkout page
-  };
+  const handleCheckout = useCallback(() => {
+    navigate('/checkout');
+  }, [navigate]);
 
-  const navigateHome = () => {
+  const navigateHome = useCallback(() => {
     navigate('/');
-  };
+  }, [navigate]);
 
-  const toggleUserInfo = () => {
-    setUserInfoVisible(!userInfoVisible);
-  };
+  const toggleUserInfo = useCallback(() => {
+    setUserInfoVisible((prev) => !prev);
+    if (!userInfoVisible) {
+      setCartVisible(false);
+    }
+  }, [userInfoVisible]);
+
+  // Determine if the current path is the Orders page
+  const isOrdersPage = location.pathname === '/orders';
 
   return (
     <nav className="navbar">
@@ -68,6 +78,11 @@ function Navbar() {
               Toys
             </button>
           </div>
+        )}
+        {!isOrdersPage && location.pathname !== '/checkout' && (
+          <button onClick={() => navigate('/orders')} className="orders-button">
+            Orders
+          </button>
         )}
         {location.pathname !== '/checkout' && (
           <button onClick={toggleCart} className="cart-button">
@@ -102,7 +117,6 @@ function Navbar() {
         ) : (
           <div className="account-container">
             <div className="profile-picture" onClick={toggleUserInfo}>
-              {/* Display profile picture or a blank avatar if none exists */}
               {currentUser.photoURL ? (
                 <img src={currentUser.photoURL} alt="Profile" className="profile-img" />
               ) : (
@@ -110,23 +124,13 @@ function Navbar() {
               )}
             </div>
             {userInfoVisible && (
-            <div className="user-info-dropdown">
-    <h4 className="account-title">Account</h4>
-    {currentUser && (
-      <>
-        <div>Email: {currentUser.email}</div>
-        <div>Username: {currentUser.displayName || "N/A"}</div>
-        <button className="edit-account-button" onClick={() => navigate('/account')}>
-          Edit Account
-        </button>
-        <button className="sign-out-button" onClick={handleSignOut}>
-          Sign Out
-        </button>
-      </>
-    )}
-  </div>
-)}
-
+              <UserDropdown
+                currentUser={currentUser}
+                toggleUserInfo={toggleUserInfo}
+                userInfoVisible={userInfoVisible}
+                handleSignOut={handleSignOut}
+              />
+            )}
           </div>
         )}
       </div>
@@ -135,28 +139,4 @@ function Navbar() {
 }
 
 export default Navbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

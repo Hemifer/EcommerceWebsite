@@ -1,0 +1,60 @@
+.orderspage-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .orderspage-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .orders-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .order-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-status,
+  .order-id {
+    margin: 5px 0;
+  }
+  
+  .order-items {
+    margin-top: 10px;
+  }
+  
+  .order-item-name {
+    font-weight: bold;
+  }
+  
+  .order-cancel-button {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
+  .order-cancel-button:hover {
+    background-color: #c0392b;
+  }
+  
+  .empty-orders-message {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  
+  

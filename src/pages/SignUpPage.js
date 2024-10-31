@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { auth, db } from '../firebase'; // Correct import path
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { ref, set } from 'firebase/database'; // Import ref and set from database
 import { useNavigate, Link } from 'react-router-dom'; // Import Link
 import './SignUpPage.css'; // Import the CSS file
@@ -13,7 +13,7 @@ function SignUpPage() {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate(); // Initialize navigate
-
+  
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,20 +24,29 @@ function SignUpPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, email, password } = formData;
-
+  
     try {
       // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user; // Get the user object
-
-      // Store user data in Realtime Database
-      await set(ref(db, 'users/' + user.uid), {
-        userName: username,
-        email: user.email,
-      });
-
-      console.log('User signed up:', formData);
-      navigate('/'); // Redirect to the home page after successful sign-up
+  
+      // Check if user is created successfully
+      if (user) {
+        // Set the user's display name
+        await updateProfile(user, {
+          displayName: username, // Set the username as displayName
+        });
+  
+        // Store user data in Realtime Database with cart inside the user node
+        await set(ref(db, `users/${user.uid}`), {
+          userName: username,
+          email: user.email,
+          cart: { items: {} }, // Initialize an empty cart for the user inside the user node
+        });
+        
+        console.log('User signed up:', formData);
+        navigate('/'); // Redirect to the home page after successful sign-up
+      }
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         setError('This email is already in use. Please change your email or log in.');
@@ -47,6 +56,8 @@ function SignUpPage() {
       console.error('Error signing up:', error);
     }
   };
+  
+  
 
   return (
     <div className="container">
@@ -97,6 +108,10 @@ function SignUpPage() {
 }
 
 export default SignUpPage;
+
+
+
+
 
 
 

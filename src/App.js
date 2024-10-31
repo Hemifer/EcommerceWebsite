@@ -1,82 +1,69 @@
-// src/App.js
-import './App.css';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
+import { CartProvider } from './context/CartContext'; // Import only CartProvider
+import { UserProvider } from './context/UserContext';
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
 import KitchenwarePage from './pages/KitchenwarePage';
 import ToysPage from './pages/ToysPage';
 import ProductDetail from './pages/ProductDetail';
-import CheckoutPage from './pages/CheckoutPage'; // Import CheckoutPage
+import CheckoutPage from './pages/CheckoutPage';
 import AccountPage from './pages/AccountPage';
-import { CartProvider, CartContext } from './CartContext';
-import { UserProvider } from './context/UserContext';
+import OrdersPage from './pages/OrdersPage'; // Import OrdersPage
 import Footer from './components/Footer';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
 
 function App() {
   const [showFooter, setShowFooter] = useState(false);
-  const { loadCart, setCartItems } = useContext(CartContext);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
-      setShowFooter(atBottom);
-    };
-
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("User is authenticated:", user.uid);
-        loadCart();
       } else {
         console.log("User is not authenticated");
-        setCartItems([]);
       }
     });
 
-    return () => unsubscribe();
-  }, [loadCart, setCartItems]);
+    return () => unsubscribe(); // Cleanup the subscription
+  }, []);
 
   return (
-    <UserProvider>
-      <CartProvider>
-        <div className="app-container">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/kitchenware" element={<KitchenwarePage />} />
-            <Route path="/toys" element={<ToysPage />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-            <Route path="/checkout" element={<CheckoutPage />} /> {/* Add CheckoutPage route */}
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/account" element={<AccountPage />} />
-          </Routes>
-          {showFooter && <Footer />}
-        </div>
-      </CartProvider>
-    </UserProvider>
+    <div className="app-container">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/kitchenware" element={<KitchenwarePage />} />
+        <Route path="/toys" element={<ToysPage />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/orders" element={<OrdersPage />} /> {/* Add OrdersPage route */}
+      </Routes>
+      {showFooter && <Footer />}
+    </div>
   );
 }
 
 export default function WrappedApp() {
   return (
     <Router>
-      <App />
+      <UserProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </UserProvider>
     </Router>
   );
 }
+
+
+
+
+
 
 
 

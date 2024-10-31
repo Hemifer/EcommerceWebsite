@@ -1,15 +1,32 @@
-.detail-container {
+/* ProductDetail.css */
+
+/* Container for product details */
+.product-detail-container {
   text-align: center;
   margin-top: 20px;
 }
 
-.product-image {
+.product-detail-title {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.product-detail-image {
   width: 300px;
   height: 300px;
   object-fit: cover;
 }
 
-.add-to-cart-button {
+.product-detail-description {
+  margin: 10px 0;
+}
+
+.product-detail-price {
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+.product-detail-add-to-cart-button {
   margin-top: 10px;
   padding: 20px 30px;
   background-color: green;
@@ -22,35 +39,36 @@
 }
 
 /* Container for the buttons */
-.button-container {
+.product-detail-button-container {
   display: flex;
-  justify-content: space-between; /* Position buttons on the left and right */
-  margin: 100px 0 10px; /* Add margin to lower the buttons by 100px */
+  justify-content: space-between;
+  margin: 100px 0 10px;
 }
 
-.back-to-products-button,
-.back-to-home-button {
-  padding: 10px 20px; /* Set consistent padding */
+.product-detail-back-to-products-button,
+.product-detail-back-to-home-button {
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold; /* Optional: Ensure text is bold for emphasis */
-  font-size: 16px; /* Ensure consistent font size */
-  line-height: 1; /* Normalize line height */
-  height: auto; /* Ensure height is determined by padding and content */
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1;
+  height: auto;
 }
 
-.back-to-products-button {
+.product-detail-back-to-products-button {
   background-color: #1FC180;
   color: white;
   margin-right: 40px;
 }
 
-.back-to-home-button {
+.product-detail-back-to-home-button {
   background-color: black;
   color: white;
   margin-left: 40px;
 }
+
 
   
   

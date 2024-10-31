@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Product from '../components/Product';
-import { CartContext } from '../CartContext'; 
+import { CartContext } from '../context/CartContext'; 
 import './KitchenwarePage.css'; 
 
 // Exporting kitchenwareProducts for potential use elsewhere
