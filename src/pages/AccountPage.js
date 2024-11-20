@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { db, storage } from '../firebase'; // Import storage
+import { auth, db, storage } from '../firebase';
 import { ref, get, update } from 'firebase/database';
-import { useUser } from '../context/UserContext';
-import { updatePassword, updateProfile } from 'firebase/auth';
+import { onAuthStateChanged, updatePassword, updateProfile } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, ref as storageRef, uploadBytes } from 'firebase/storage';
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar'; // Import Navbar
+import Navbar from '../components/Navbar';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../context/translations';
 import './AccountPage.css';
 
 const AccountPage = () => {
-    const { currentUser } = useUser();
+    const [currentUser, setCurrentUser] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
     const [cartInfo, setCartInfo] = useState(null);
     const [editingField, setEditingField] = useState(null);
@@ -18,25 +19,40 @@ const AccountPage = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
-    const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
+    const [showPopup, setShowPopup] = useState(false);
 
     const navigate = useNavigate();
+    const { language } = useLanguage(); // Access the current language
+    const t = translations[language]; // Fetch translations for the current language
 
     useEffect(() => {
-        if (currentUser) {
-            const userRef = ref(db, 'users/' + currentUser.uid);
-            get(userRef).then(snapshot => {
-                const data = snapshot.val();
-                if (data) setUserInfo(data);
-            }).catch(error => console.error("Error fetching user info:", error));
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setCurrentUser(user);
+                const userRef = ref(db, `users/${user.uid}`);
+                get(userRef)
+                    .then(snapshot => {
+                        const data = snapshot.val();
+                        if (data) setUserInfo(data);
+                    })
+                    .catch(error => console.error(t.genericError, error));
 
-            const cartRef = ref(db, 'carts/' + currentUser.uid);
-            get(cartRef).then(snapshot => {
-                const cartData = snapshot.val();
-                if (cartData) setCartInfo(cartData);
-            }).catch(error => console.error("Error fetching cart info:", error));
-        }
-    }, [currentUser]);
+                const cartRef = ref(db, `carts/${user.uid}`);
+                get(cartRef)
+                    .then(snapshot => {
+                        const cartData = snapshot.val();
+                        if (cartData) setCartInfo(cartData);
+                    })
+                    .catch(error => console.error(t.genericError, error));
+            } else {
+                setCurrentUser(null);
+                setUserInfo(null);
+                setCartInfo(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, [t.genericError]);
 
     const handleEdit = (field) => {
         setEditingField(field);
@@ -48,23 +64,32 @@ const AccountPage = () => {
         try {
             if (editingField === 'password') {
                 if (newValue.length < 6 || newValue !== confirmPassword) {
-                    setError(newValue.length < 6 ? 'Password must be at least 6 characters long.' : 'Passwords do not match.');
+                    setError(
+                        newValue.length < 6
+                            ? t.weakPassword
+                            : t.passwordMismatch
+                    );
                     return;
                 }
-                await updatePassword(currentUser, newValue);
-                setError('Password updated successfully!');
+
+                if (currentUser) {
+                    await updatePassword(currentUser, newValue);
+                    setError(t.passwordUpdated);
+                } else {
+                    throw new Error(t.notAuthenticated);
+                }
             } else {
-                const userRef = ref(db, 'users/' + currentUser.uid);
+                const userRef = ref(db, `users/${currentUser.uid}`);
                 await update(userRef, { [editingField]: newValue });
-                setUserInfo((prev) => ({ ...prev, [editingField]: newValue }));
+                setUserInfo(prev => ({ ...prev, [editingField]: newValue }));
             }
             setEditingField(null);
             setNewValue('');
             setConfirmPassword('');
             setError('');
         } catch (error) {
-            console.error("Error updating user info:", error);
-            setError(error.message);
+            console.error(t.genericError, error);
+            setError(t.genericError);
         }
     };
 
@@ -73,16 +98,16 @@ const AccountPage = () => {
 
         try {
             const profilePicRef = storageRef(storage, `profilePictures/${currentUser.uid}`);
-            await uploadBytes(profilePicRef, selectedFile); // Upload the file to Firebase Storage
+            await uploadBytes(profilePicRef, selectedFile);
 
-            const photoURL = await getDownloadURL(profilePicRef); // Get the download URL
-            await updateProfile(currentUser, { photoURL }); // Update the profile picture URL in Firebase Auth
-            setUserInfo((prev) => ({ ...prev, photoURL })); // Update the local state with the new URL
+            const photoURL = await getDownloadURL(profilePicRef);
+            await updateProfile(currentUser, { photoURL });
+            setUserInfo(prev => ({ ...prev, photoURL }));
             setSelectedFile(null);
-            setShowPopup(false); // Close popup after upload
+            setShowPopup(false);
         } catch (error) {
-            console.error("Error uploading profile picture:", error);
-            setError("Failed to upload profile picture. Please try again.");
+            console.error(t.uploadError, error);
+            setError(t.uploadError);
         }
     };
 
@@ -91,39 +116,44 @@ const AccountPage = () => {
     };
 
     if (!currentUser) {
-        return <div>Please log in to view your account details.</div>;
+        return <div>{t.loginToView}</div>;
     }
 
     return (
         <>
-            <Navbar /> {/* Add Navbar here */}
+            <Navbar />
 
             <div className="accountinfo-profile">
                 {currentUser.photoURL ? (
-                    <img src={currentUser.photoURL} alt="Profile" className="accountinfo-profile-img" />
+                    <img src={currentUser.photoURL} alt={t.profilePic} className="accountinfo-profile-img" />
                 ) : (
                     <div className="accountinfo-blank-profile" />
                 )}
-                <button onClick={() => setShowPopup(true)} className="accountpage-change-profile-button">Change profile picture</button>
+                <button onClick={() => setShowPopup(true)} className="accountpage-change-profile-button">
+                    {t.changeProfilePicture}
+                </button>
             </div>
 
             {showPopup && (
                 <div className="accountpage-popup-container">
                     <div className="accountpage-popup-content">
-                        <h2>Change Profile Picture</h2>
-                        <img src={currentUser.photoURL || ''} alt="Current Profile" className="accountpage-popup-profile-img" />
+                        <h2>{t.changeProfilePicture}</h2>
                         <input type="file" onChange={handleFileChange} />
-                        <button onClick={handleUploadProfilePicture} className="accountpage-popup-update-button">Update</button>
-                        <button onClick={() => setShowPopup(false)} className="accountpage-popup-cancel-button">Cancel</button>
+                        <button onClick={handleUploadProfilePicture} className="accountpage-popup-update-button">
+                            {t.update}
+                        </button>
+                        <button onClick={() => setShowPopup(false)} className="accountpage-popup-cancel-button">
+                            {t.cancel}
+                        </button>
                     </div>
                 </div>
             )}
 
-            <h1 className="accountinfo-h1">Account Page</h1>
+            <h1 className="accountinfo-h1">{t.accountPageTitle}</h1>
             {userInfo ? (
                 <div className="accountinfo-details">
                     <div className="accountinfo-field">
-                        <span>Name: {userInfo.userName}</span>
+                        <span>{t.username}: {userInfo.userName}</span>
                         {editingField === 'userName' ? (
                             <input
                                 type="text"
@@ -132,11 +162,13 @@ const AccountPage = () => {
                                 className="accountinfo-input"
                             />
                         ) : (
-                            <button onClick={() => handleEdit('userName')} className="accountinfo-edit-button">Edit</button>
+                            <button onClick={() => handleEdit('userName')} className="accountinfo-edit-button">
+                                {t.edit}
+                            </button>
                         )}
                     </div>
                     <div className="accountinfo-field">
-                        <span>Email: {userInfo.email}</span>
+                        <span>{t.email}: {userInfo.email}</span>
                         {editingField === 'email' ? (
                             <input
                                 type="email"
@@ -145,65 +177,64 @@ const AccountPage = () => {
                                 className="accountinfo-input"
                             />
                         ) : (
-                            <button onClick={() => handleEdit('email')} className="accountinfo-edit-button">Edit</button>
+                            <button onClick={() => handleEdit('email')} className="accountinfo-edit-button">
+                                {t.edit}
+                            </button>
                         )}
                     </div>
                     <div className="accountinfo-field">
-                        <span>Password: {editingField === 'password' ? "********" : "N/A"}</span>
+                        <span>{t.password}: {editingField === 'password' ? '********' : 'N/A'}</span>
                         {editingField === 'password' ? (
                             <>
                                 <input
                                     type="password"
                                     value={newValue}
                                     onChange={(e) => setNewValue(e.target.value)}
-                                    placeholder="New Password"
+                                    placeholder={t.newPassword}
                                     className="accountinfo-input"
                                 />
                                 <input
                                     type="password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    placeholder="Confirm New Password"
+                                    placeholder={t.confirmNewPassword}
                                     className="accountinfo-input"
                                 />
                             </>
                         ) : (
-                            <button onClick={() => handleEdit('password')} className="accountinfo-edit-button">Edit</button>
+                            <button onClick={() => handleEdit('password')} className="accountinfo-edit-button">
+                                {t.edit}
+                            </button>
                         )}
                     </div>
                     {editingField && (
-                        <button onClick={handleUpdate} className="accountinfo-update-button">Update</button>
+                        <button onClick={handleUpdate} className="accountinfo-update-button">
+                            {t.update}
+                        </button>
                     )}
                     {error && <p className="accountinfo-error">{error}</p>}
                 </div>
             ) : (
-                <p>Loading user information...</p>
+                <p>{t.loadingUserInfo}</p>
             )}
             {cartInfo ? (
                 <div>
-                    <h2 className="accountinfo-h2">Your Cart</h2>
+                    <h2 className="accountinfo-h2">{t.yourCart}</h2>
                     {Object.keys(cartInfo.items || {}).length === 0 ? (
-                        <p>Your cart is empty.</p>
+                        <p>{t.cartEmpty}</p>
                     ) : (
                         <ul>
                             {Object.entries(cartInfo.items).map(([id, item]) => (
                                 <li key={id}>
-                                    {item.name} - ${item.price} (Quantity: {item.quantity})
+                                    {item.name} - ${item.price} ({t.quantity}: {item.quantity})
                                 </li>
                             ))}
                         </ul>
                     )}
                 </div>
             ) : (
-                <p>Loading cart information...</p>
+                <p>{t.loadingCart}</p>
             )}
-
-            <button 
-                onClick={() => navigate('/')} 
-                className="accountpage-backbutton"
-            >
-                Back to Home
-            </button>
 
             <Footer />
         </>
@@ -211,6 +242,4 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
-
-
 

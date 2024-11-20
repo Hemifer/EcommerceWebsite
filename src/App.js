@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth'; // This import remains the same
 import { auth } from './firebase';
-import { CartProvider } from './context/CartContext'; // Import only CartProvider
+import { CartProvider } from './context/CartContext';
 import { UserProvider } from './context/UserContext';
+import { LanguageProvider } from './context/LanguageContext'; // Import the LanguageProvider
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
@@ -12,7 +13,7 @@ import ToysPage from './pages/ToysPage';
 import ProductDetail from './pages/ProductDetail';
 import CheckoutPage from './pages/CheckoutPage';
 import AccountPage from './pages/AccountPage';
-import OrdersPage from './pages/OrdersPage'; // Import OrdersPage
+import OrdersPage from './pages/OrdersPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -41,7 +42,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/account" element={<AccountPage />} />
-        <Route path="/orders" element={<OrdersPage />} /> {/* Add OrdersPage route */}
+        <Route path="/orders" element={<OrdersPage />} />
       </Routes>
       {showFooter && <Footer />}
     </div>
@@ -51,14 +52,18 @@ function App() {
 export default function WrappedApp() {
   return (
     <Router>
-      <UserProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </UserProvider>
+      <LanguageProvider>  {/* Wrap the app with the LanguageProvider */}
+        <UserProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </UserProvider>
+      </LanguageProvider>
     </Router>
   );
 }
+
+
 
 
 

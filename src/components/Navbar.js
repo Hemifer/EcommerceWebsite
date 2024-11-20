@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useUser } from '../context/UserContext';
-import { signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth'; // Correct for new SDK
 import { auth } from '../firebase';
 import logo from '../assets/logo.jpg';
 import UserDropdown from './UserDropdown';
@@ -11,7 +11,6 @@ import './Navbar.css';
 function Navbar() {
   const { cartItems, getCartCount, removeFromCart } = useCart();
   const navigate = useNavigate();
-  const location = useLocation();
   const { currentUser } = useUser();
   const [cartVisible, setCartVisible] = useState(false);
   const [categoriesVisible, setCategoriesVisible] = useState(false);
@@ -34,7 +33,7 @@ function Navbar() {
 
   const handleSignOut = useCallback(async () => {
     try {
-      await signOut(auth);
+      await signOut(auth);  // This line is fine
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
@@ -56,9 +55,6 @@ function Navbar() {
     }
   }, [userInfoVisible]);
 
-  // Determine if the current path is the Orders page
-  const isOrdersPage = location.pathname === '/orders';
-
   return (
     <nav className="navbar">
       <div className="logo-container" onClick={navigateHome}>
@@ -79,36 +75,36 @@ function Navbar() {
             </button>
           </div>
         )}
-        {!isOrdersPage && location.pathname !== '/checkout' && (
-          <button onClick={() => navigate('/orders')} className="orders-button">
-            Orders
-          </button>
-        )}
-        {location.pathname !== '/checkout' && (
-          <button onClick={toggleCart} className="cart-button">
-            🛒 Cart ({getCartCount()})
-          </button>
-        )}
-        {cartVisible && location.pathname !== '/checkout' && (
-          <div className="cart-dropdown">
-            {cartItems.length > 0 ? (
-              <>
-                {cartItems.map(item => (
-                  <div key={item.id} className="cart-item">
-                    <span>{item.name}</span>
-                    <button className="remove-button" onClick={() => removeFromCart(item.id)}>
-                      Remove
+        {currentUser && (
+          <>
+            <button onClick={() => navigate('/orders')} className="orders-button">
+              Orders
+            </button>
+            <button onClick={toggleCart} className="cart-button">
+              🛒 Cart ({getCartCount()})
+            </button>
+            {cartVisible && (
+              <div className="cart-dropdown">
+                {cartItems.length > 0 ? (
+                  <>
+                    {cartItems.map(item => (
+                      <div key={item.id} className="cart-item">
+                        <span>{item.name}</span>
+                        <button className="remove-button" onClick={() => removeFromCart(item.id)}>
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                    <button className="checkout-button" onClick={handleCheckout}>
+                      Proceed to Checkout
                     </button>
-                  </div>
-                ))}
-                <button className="checkout-button" onClick={handleCheckout}>
-                  Proceed to Checkout
-                </button>
-              </>
-            ) : (
-              <div className="empty-cart">Cart is empty</div>
+                  </>
+                ) : (
+                  <div className="empty-cart">Cart is empty</div>
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
         {!currentUser ? (
           <button className="signup-button" onClick={handleSignUp}>
@@ -139,4 +135,3 @@ function Navbar() {
 }
 
 export default Navbar;
-

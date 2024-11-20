@@ -1,6 +1,9 @@
+// src/pages/ToysPage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar'; // Import the Navbar component
+import { useLanguage } from '../context/LanguageContext'; // Import useLanguage hook
+import { translations } from '../context/translations'; // Import translations file
 import './ToysPage.css';
 
 export const toyProducts = [
@@ -10,9 +13,10 @@ export const toyProducts = [
   { id: 104, name: "MLP Plushie", price: 15.99, image: "https://via.placeholder.com/150", description: "A soft and cuddly plush toy, branded from the popular kids show." }, 
 ];
 
-
 function ToysPage() {
   const navigate = useNavigate();
+  const { language } = useLanguage(); // Use the language from context
+  const t = translations[language]; // Get the translations for the current language
 
   const handleProductClick = (id) => {
     navigate(`/products/${id}`, { state: { category: 'toys' } });
@@ -25,8 +29,8 @@ function ToysPage() {
   return (
     <div className="toys-page">
       <Navbar /> {/* Add Navbar here */}
-      <button onClick={handleBackToHome} className="back-to-home-button">Back to Home</button> {/* Back to Home button */}
-      <h1 className="products-header">Toys</h1>
+      <button onClick={handleBackToHome} className="back-to-home-button">{t.backToHome}</button> {/* Back to Home button */}
+      <h1 className="products-header">{t.toysHeader}</h1> {/* Translated header */}
       <div className="products-grid">
         {toyProducts.map((product) => (
           <div key={product.id} className="product-card" onClick={() => handleProductClick(product.id)}>
@@ -41,6 +45,7 @@ function ToysPage() {
 }
 
 export default ToysPage;
+
 
 
 

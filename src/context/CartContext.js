@@ -1,7 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { db } from '../firebase'; // Ensure your Firebase database is imported
+import { db } from '../firebase'; // Correct import for Firebase database initialization
 import { useUser } from './UserContext'; // Import your UserContext
-import { ref, onValue, remove, get, set } from 'firebase/database'; // Importing necessary functions
+import { ref, onValue, remove, get, set } from 'firebase/database'; // Firebase v9+ modular imports
+
 
 export const CartContext = createContext();
 
@@ -139,12 +140,3 @@ export const CartProvider = ({ children }) => {
 
 // Custom hook to use the CartContext
 export const useCart = () => useContext(CartContext);
-
-
-
-
-
-
-
-
-

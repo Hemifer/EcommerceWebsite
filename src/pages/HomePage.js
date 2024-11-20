@@ -1,11 +1,13 @@
 // src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
 import { auth } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth'; // This import remains the same
 import Navbar from '../components/Navbar';
 import { kitchenwareProducts } from './KitchenwarePage'; // Import the product list
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { useCart } from '../context/CartContext'; // Import CartContext
+import { useLanguage } from '../context/LanguageContext'; // Import useLanguage
+import { translations } from '../context/translations'; // Import translations
 import './HomePage.css';
 
 function HomePage() {
@@ -15,12 +17,14 @@ function HomePage() {
 
   const navigate = useNavigate(); // Use navigate
   const { removeFromCart } = useCart(); // Access remove function
+  const { language } = useLanguage(); // Get current language
+  const t = translations[language]; // Get translations based on current language
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user);
+      setIsLoggedIn(!!user); // Update logged-in state
     });
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup on unmount
   }, []);
 
   const handleSearch = (e) => {
@@ -38,15 +42,15 @@ function HomePage() {
   return (
     <div className="homepage-background">
       <Navbar />
-      <h1 className="homepage-header">Welcome to HemiMerce!</h1>
+      <h1 className="homepage-header">{t.welcomeMessage}</h1>
       <p className="homepage-secondtext">
-        Discover our wide range of kitchenware products that elevate your cooking experience!
+        {t.productDescription}
       </p>
       <input
         type="text"
         value={searchTerm}
         onChange={handleSearch}
-        placeholder="Search for products..."
+        placeholder={t.searchPlaceholder}
         className="searchBar"
       />
       <div className="productResults">
@@ -66,7 +70,4 @@ function HomePage() {
 }
 
 export default HomePage;
-
-
-
 

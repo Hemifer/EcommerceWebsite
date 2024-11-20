@@ -69,3 +69,19 @@
   width: 200px;
   cursor: pointer;
 }
+
+/* src/pages/HomePage.css */
+.switchLanguageButton {
+  background-color: #3b82f6;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.switchLanguageButton:hover {
+  background-color: #2563eb;
+}

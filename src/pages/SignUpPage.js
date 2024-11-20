@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
-import { auth, db } from '../firebase'; // Correct import path
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { ref, set } from 'firebase/database'; // Import ref and set from database
-import { useNavigate, Link } from 'react-router-dom'; // Import Link
-import './SignUpPage.css'; // Import the CSS file
+import React, { useState, useContext } from 'react';
+import { auth, db } from '../firebase'; // Ensure db is imported
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Firebase v9+ modular imports
+import { ref, set, get, query, orderByChild, equalTo } from 'firebase/database'; // Firebase v9+ modular imports
+import { useNavigate, Link } from 'react-router-dom';
+import { translations } from '../context/translations'; // Import translations context
+import './SignUpPage.css';
 
 function SignUpPage() {
+  const { translations, language } = useContext(translations); // Access translation context
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize navigate
-  
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -21,55 +23,69 @@ function SignUpPage() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const CreateUser = async (e) => {
     e.preventDefault();
     const { username, email, password } = formData;
-  
+
     try {
-      // Create user with email and password
+      console.log("Step 1: Checking if username exists in the database.");
+
+      // Check if the username exists in the Realtime Database
+      const usernameQuery = query(
+        ref(db, 'users'),
+        orderByChild('userName'),
+        equalTo(username)
+      );
+      const usernameSnapshot = await get(usernameQuery);
+
+      if (usernameSnapshot.exists()) {
+        setError(translations[language].usernameTaken); // Use translated error message
+        console.log("Username exists in the database, cannot proceed with signup.");
+        return;
+      }
+
+      console.log("Step 2: Attempting to create user with email and password.");
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user; // Get the user object
-  
-      // Check if user is created successfully
-      if (user) {
-        // Set the user's display name
-        await updateProfile(user, {
-          displayName: username, // Set the username as displayName
-        });
-  
-        // Store user data in Realtime Database with cart inside the user node
-        await set(ref(db, `users/${user.uid}`), {
-          userName: username,
-          email: user.email,
-          cart: { items: {} }, // Initialize an empty cart for the user inside the user node
-        });
-        
-        console.log('User signed up:', formData);
-        navigate('/'); // Redirect to the home page after successful sign-up
-      }
+      const user = userCredential.user;
+
+      console.log("Step 3: User created successfully. Updating profile with username.");
+      await updateProfile(user, { displayName: username });
+
+      console.log("Step 4: Saving user information to the database.");
+      await set(ref(db, `users/${user.uid}`), {
+        userName: username,
+        email: user.email,
+        cart: { items: {} },
+      });
+
+      console.log("Step 5: User data saved successfully in the database. Redirecting to home.");
+      navigate('/');
     } catch (error) {
+      console.error("Error during sign up process:", error);
+
       if (error.code === 'auth/email-already-in-use') {
-        setError('This email is already in use. Please change your email or log in.');
+        setError(translations[language].emailInUse); // Translated error message
+      } else if (error.code === 'auth/invalid-email') {
+        setError(translations[language].invalidEmail); // Translated error message
+      } else if (error.code === 'auth/weak-password') {
+        setError(translations[language].weakPassword); // Translated error message
       } else {
-        setError(error.message);
+        setError(translations[language].genericError); // Translated generic error message
       }
-      console.error('Error signing up:', error);
     }
   };
-  
-  
 
   return (
     <div className="container">
       <div className="headerContainer">
         <Link to="/" className="siteName">HemiMerce</Link>
-        <Link to="/login" className="loginButton">Log In</Link> {/* Log In button */}
+        <Link to="/login" className="loginButton">{translations[language].login}</Link>
       </div>
-      <h2 className="header">Sign Up</h2>
+      <h2 className="header">{translations[language].signUp}</h2>
       {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={CreateUser} className="form">
         <div className="formGroup">
-          <label className="label">Username</label>
+          <label className="label">{translations[language].username}</label>
           <input
             type="text"
             name="username"
@@ -80,7 +96,7 @@ function SignUpPage() {
           />
         </div>
         <div className="formGroup">
-          <label className="label">Email</label>
+          <label className="label">{translations[language].email}</label>
           <input
             type="email"
             name="email"
@@ -91,7 +107,7 @@ function SignUpPage() {
           />
         </div>
         <div className="formGroup">
-          <label className="label">Password</label>
+          <label className="label">{translations[language].password}</label>
           <input
             type="password"
             name="password"
@@ -101,23 +117,13 @@ function SignUpPage() {
             className="input"
           />
         </div>
-        <button type="submit" className="button">Sign Up</button>
+        <button type="submit" className="button">{translations[language].signUp}</button>
       </form>
     </div>
   );
 }
-
 export default SignUpPage;
 
-
-
-
-
-
-
-
-
-
-       
+   
 
 

@@ -3,7 +3,9 @@ import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Product from '../components/Product';
-import { CartContext } from '../context/CartContext'; 
+import { CartContext } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext'; // Import useLanguage
+import { translations } from '../context/translations'; // Import translations
 import './KitchenwarePage.css'; 
 
 // Exporting kitchenwareProducts for potential use elsewhere
@@ -30,10 +32,11 @@ export const kitchenwareProducts = [
   { id: 20, name: "Dish Rack", price: 29.99, image: "https://via.placeholder.com/150", description: "Keeps your dishes organized and dry." },  
 ];
 
-
 function KitchenwarePage() {
   const navigate = useNavigate();
   const { cartItems, addToCart } = useContext(CartContext);
+  const { language } = useLanguage(); // Get current language
+  const t = translations[language]; // Get translations based on current language
 
   const handleBackToHome = () => {
     navigate('/'); 
@@ -43,8 +46,8 @@ function KitchenwarePage() {
     <div>
       <Navbar />
       <div className="products-container">
-        <button onClick={handleBackToHome} className="products-backButton">Back to Home</button>
-        <h1 className="products-header">Kitchenware</h1>
+        <button onClick={handleBackToHome} className="products-backButton">{t.backToHome}</button>
+        <h1 className="products-header">{t.kitchenwareHeader}</h1>
         <div className="products-grid">
           {kitchenwareProducts.map(product => (
             <Product 
@@ -61,6 +64,8 @@ function KitchenwarePage() {
 }
 
 export default KitchenwarePage;
+
+
 
 
 
