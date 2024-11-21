@@ -1,41 +1,44 @@
 // src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
 import { auth } from '../firebase';
-import { onAuthStateChanged } from 'firebase/auth'; // This import remains the same
+import { onAuthStateChanged } from 'firebase/auth';
 import Navbar from '../components/Navbar';
-import { kitchenwareProducts } from './KitchenwarePage'; // Import the product list
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import { useCart } from '../context/CartContext'; // Import CartContext
-import { useLanguage } from '../context/LanguageContext'; // Import useLanguage
-import { translations } from '../context/translations'; // Import translations
+import { kitchenwareProducts } from './KitchenwarePage';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../context/translations';
+import Footer from '../components/Footer';
 import './HomePage.css';
 
 function HomePage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState(kitchenwareProducts.slice(0, 8)); // Default to first 8 products
+  const [filteredProducts, setFilteredProducts] = useState(kitchenwareProducts.slice(0, 8));
 
-  const navigate = useNavigate(); // Use navigate
-  const { removeFromCart } = useCart(); // Access remove function
-  const { language } = useLanguage(); // Get current language
-  const t = translations[language]; // Get translations based on current language
+  const navigate = useNavigate();
+  const { removeFromCart } = useCart();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsLoggedIn(!!user); // Update logged-in state
+      setIsLoggedIn(!!user);
     });
-    return () => unsubscribe(); // Cleanup on unmount
+    return () => unsubscribe();
   }, []);
 
   const handleSearch = (e) => {
     const searchValue = e.target.value.toLowerCase();
     setSearchTerm(searchValue);
     if (searchValue === '') {
-      setFilteredProducts(kitchenwareProducts.slice(0, 8)); // Reset to first 8 products
+      setFilteredProducts(kitchenwareProducts.slice(0, 8));
     } else {
-      setFilteredProducts(kitchenwareProducts.filter(product => 
-        product.name.toLowerCase().includes(searchValue) // Filter based on search term
-      ));
+      setFilteredProducts(
+        kitchenwareProducts.filter((product) =>
+          product.name.toLowerCase().includes(searchValue)
+        )
+      );
     }
   };
 
@@ -43,9 +46,7 @@ function HomePage() {
     <div className="homepage-background">
       <Navbar />
       <h1 className="homepage-header">{t.welcomeMessage}</h1>
-      <p className="homepage-secondtext">
-        {t.productDescription}
-      </p>
+      <p className="homepage-secondtext">{t.productDescription}</p>
       <input
         type="text"
         value={searchTerm}
@@ -54,20 +55,22 @@ function HomePage() {
         className="searchBar"
       />
       <div className="productResults">
-        {filteredProducts.map(product => (
-          <button 
-            key={product.id} 
-            className="productCard" 
-            onClick={() => navigate(`/products/${product.id}`)} // Navigate to product details on card click
+        {filteredProducts.map((product) => (
+          <button
+            key={product.id}
+            className="productCard"
+            onClick={() => navigate(`/products/${product.id}`)}
           >
             <img src={product.image} alt={product.name} />
             <h3>{product.name}</h3>
           </button>
         ))}
       </div>
+      <Footer />
     </div>
   );
 }
 
 export default HomePage;
+
 

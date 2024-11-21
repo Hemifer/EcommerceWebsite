@@ -1,15 +1,19 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext'; // Import useLanguage to access the current language
+import { translations } from '../context/translations'; // Import translations
 
 function HelpModal({ isOpen, onClose }) {
+  const { language } = useLanguage(); // Get the current language
+  const currentTranslations = translations[language]; // Get the translations based on the current language
+
   if (!isOpen) return null; // Return nothing if modal is not open
 
   return (
     <div style={styles.overlay}>
       <div style={styles.modal}>
-        <h2 style={styles.modalTitle}>Here is some contact info you can use to have any questions answered!</h2>
-        <p>Email: <a href="mailto:pistillityler@icloud.com">pistillityler@icloud.com</a></p>
-        <p>Phone: <a href="tel:+14389358532">+1(438) 935-8532</a></p>
-        <button style={styles.closeButton} onClick={onClose}>Close</button>
+        <h2 style={styles.modalTitle}>{currentTranslations.helpModalTitle}</h2> {/* Use dynamic translations */}
+        <p>{currentTranslations.helpModalContactInfo}</p>
+        <button style={styles.closeButton} onClick={onClose}>{currentTranslations.close}</button> {/* Dynamic Close button text */}
       </div>
     </div>
   );
@@ -52,3 +56,4 @@ const styles = {
 };
 
 export default HelpModal;
+

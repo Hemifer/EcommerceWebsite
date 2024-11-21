@@ -1,0 +1,76 @@
+/* OnSaleDropdown.css */
+
+/* Container for the On Sale dropdown */
+.onsale-container {
+    position: absolute;
+    top: 70px; /* Make sure it's below the navbar */
+    left: 77%;
+    transform: translateX(-57%);
+    z-index: 1;
+    width: 190px;
+    height: 120px;
+    background-color: #ff0000;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: block; /* Ensure it's visible when toggled */
+  }
+
+/* OnSaleDropdown styles */
+.onsale-dropdown { /* Ensure it stretches to full width */
+    background-color: #000000;
+    border: 3px solid #ffffff;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    border-radius: 8px;
+    width: 87%;
+    height: 80%;
+}
+
+/* Fix for the button being out of place or too large */
+.onsale-item button { /* Ensure button fits inside the item container */
+    padding: 5px;
+    font-size: 1rem;
+    background-color: #e60000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;/* Add some spacing between the content and the button */
+}
+
+.onsale-item button:hover {
+    background-color: #ff3434;
+}
+
+/* Product name and description styling */
+.onsale-item h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.onsale-item p {
+    margin: 0px 0;
+    color: #e79f04;
+    font-size: 0.9rem;
+}
+
+/* Price styling */
+.sale-price {
+    font-weight: bold;
+    color: #e60000;
+}
+
+/* Message when no items are on sale */
+.no-sale-items {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+
+
+

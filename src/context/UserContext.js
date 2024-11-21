@@ -37,10 +37,6 @@ export const UserProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    if (loading) {
-        return <div>Loading user data...</div>;
-    }
-
     return (
         <UserContext.Provider value={{ currentUser }}>
             {children}

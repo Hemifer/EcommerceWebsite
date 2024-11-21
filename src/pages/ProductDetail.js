@@ -1,19 +1,22 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { CartContext } from '../context/CartContext'; 
+import { CartContext } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext'; // Corrected import for useWishlist
 import { kitchenwareProducts } from './KitchenwarePage'; 
 import { toyProducts } from './ToysPage'; 
 import Navbar from '../components/Navbar'; 
-import { translations } from '../context/translations'; // Import useTranslation
+import { translations } from '../context/translations';
+import { useLanguage } from '../context/LanguageContext'; // Import LanguageContext hook
 import './ProductDetail.css'; 
 
 function ProductDetail() {
   const { id } = useParams(); 
   const { addToCart } = useContext(CartContext); 
+  const { addToWishlist } = useWishlist(); // Corrected usage of useWishlist
   const navigate = useNavigate();
+  const { language: currentLanguage } = useLanguage(); // Get currentLanguage from LanguageContext
   const [isAdding, setIsAdding] = useState(false);
 
-  const { translations, currentLanguage } = translations(); // Access translation context
   const product = kitchenwareProducts.find(p => p.id === parseInt(id)) ||
                   toyProducts.find(p => p.id === parseInt(id)); 
 
@@ -35,6 +38,13 @@ function ProductDetail() {
     await addToCart(product);
     setIsAdding(false); 
   };
+
+  const handleAddToWishlist = async (event) => {
+    event.preventDefault();
+    console.log('Adding to wishlist:', product); // Log to check if the product is being passed correctly
+    await addToWishlist(product); // Add product to wishlist using useWishlist hook
+  };
+  
 
   const handleBackToProducts = () => {
     if (kitchenwareProducts.some(p => p.id === parseInt(id))) {
@@ -58,7 +68,7 @@ function ProductDetail() {
           {translations[currentLanguage].backToHome}
         </button>
         <button onClick={handleBackToProducts} className="product-detail-back-to-products-button">
-          {translations[currentLanguage].backToHome} {/* If different, change as needed */}
+          {translations[currentLanguage].backToProducts}
         </button>
       </div>
       <div className="product-detail-container">
@@ -71,11 +81,17 @@ function ProductDetail() {
         <button onClick={handleAddToCart} className="product-detail-add-to-cart-button">
           {translations[currentLanguage].addToCart}
         </button>
+        <button onClick={handleAddToWishlist} className="product-detail-add-to-wishlist-button">
+          {translations[currentLanguage].productPageWishlist}
+        </button>
       </div>
     </div>
   );
 }
 
 export default ProductDetail;
+
+
+
 
 

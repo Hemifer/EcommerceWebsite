@@ -69,6 +69,21 @@
   margin-left: 40px;
 }
 
+.product-detail-add-to-wishlist-button {
+  background-color: #ff69b4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.product-detail-add-to-wishlist-button:hover {
+  background-color: #ff3385;
+}
+
+
 
   
   

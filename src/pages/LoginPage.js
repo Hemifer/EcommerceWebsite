@@ -1,8 +1,10 @@
 // src/pages/LoginPage.js
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { auth } from '../firebase'; // Use the auth from firebase.js
-import { signInWithEmailAndPassword } from 'firebase/auth'; // No need for getAuth since we are using the imported auth
-import { useNavigate } from 'react-router-dom'; // Import TranslationsContext
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext'; // Import LanguageContext
+import { translations } from '../context/translations'; // Import translations
 import './LoginPage.css'; // Import the CSS file
 
 function LoginPage() {
@@ -13,8 +15,8 @@ function LoginPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Use the context to get translations
-  const { translations, language } = useContext(translations);
+  // Access language and translations from LanguageContext
+  const { language } = useLanguage();
   const t = translations[language]; // Current language translations
 
   const handleChange = (e) => {
@@ -53,16 +55,13 @@ function LoginPage() {
       // Firebase error code handling
       switch (error.code) {
         case 'auth/user-not-found':
-          setError(t.emailInUse);
+          setError(t.userNotFound);
           break;
         case 'auth/wrong-password':
-          setError(t.genericError);
-          break;
-        case 'auth/invalid-credential':
-          setError(t.genericError);
+          setError(t.wrongPassword);
           break;
         case 'auth/too-many-requests':
-          setError(t.genericError);
+          setError(t.tooManyRequests);
           break;
         default:
           setError(t.genericError);
@@ -104,3 +103,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+

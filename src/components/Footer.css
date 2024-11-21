@@ -1,22 +1,24 @@
 .footer {
-  background-color: #333;
+  background-color: black;
   color: #fff;
   text-align: center;
-  padding: 10px;
+  padding: 10px; /* Adjust this value to increase/decrease the footer padding */
   width: 100%; /* Ensure it takes the full width */
   position: fixed; /* Keep it at the bottom */
   bottom: 0; /* Position at the bottom of the viewport */
   left: 0; /* Align to the left */
   z-index: 10; /* Ensure it appears above other content */
+  height: 50px; /* This allows for the footer height to adjust based on content */
 }
 
+
 .footer-text {
-  margin-bottom: 10px;
+  margin-bottom: -20px;
 }
 
 .footer-help-button {
   padding: 7px 10px;
-  background-color: #007bff;
+  background-color: #5100d4;
   color: #fff;
   border: none;
   border-radius: 10px;

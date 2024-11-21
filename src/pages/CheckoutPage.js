@@ -3,15 +3,20 @@ import { CartContext } from '../context/CartContext';
 import { loadStripe } from '@stripe/stripe-js';
 import NavBar from '../components/Navbar';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../context/translations';
 import './CheckoutPage.css';
+import showFooter  from '../App'
 
-// Make sure to replace with your real publishable key in production
 const stripePromise = loadStripe('pk_test_51Q2fPBRqC36KgL0FILN6uZLGFXCOgF7Wtf2NfehVGybcqk1lj4o4uI3aUBNYbqqByqvHdsfNRlXgoMLXhsRkFIuw006IciA3aj');
 
 function CheckoutForm() {
+  showFooter = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const { cartItems, removeFromCart, clearCart } = useContext(CartContext);
+  const { language } = useLanguage(); // Get current language
+  const t = translations[language]; // Translation helper
   const [errorMessage, setErrorMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showThankYouMessage, setShowThankYouMessage] = useState(false);
@@ -20,14 +25,14 @@ function CheckoutForm() {
   );
   const [recipientName, setRecipientName] = useState('');
   const [recipientEmail, setRecipientEmail] = useState('');
-  const [isGift, setIsGift] = useState(false); // New state to track if it's a gift
+  const [recipientAddress, setRecipientAddress] = useState('');
+  const [isGift, setIsGift] = useState(false);
 
   const handleQuantityChange = (itemId, amount) => {
     setQuantities((prevQuantities) => {
       const newQuantity = (prevQuantities[itemId] || 1) + amount;
-
       if (newQuantity <= 0) {
-        if (window.confirm('Delete item?')) {
+        if (window.confirm(t.cartRemoveConfirm)) {
           removeFromCart(itemId);
           return prevQuantities;
         }
@@ -42,7 +47,6 @@ function CheckoutForm() {
     event.preventDefault();
     setIsProcessing(true);
 
-    // Create payment method
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
@@ -51,11 +55,11 @@ function CheckoutForm() {
     if (error) {
       setErrorMessage(error.message);
       setIsProcessing(false);
-      return; 
+      return;
     }
 
     try {
-      const userEmail = 'pistillityler@icloud.com'; // Replace with dynamic user email
+      const userEmail = 'pistillityler@icloud.com';
       const response = await fetch('http://localhost:5000/create-payment-intent', {
         method: 'POST',
         headers: {
@@ -68,29 +72,27 @@ function CheckoutForm() {
             quantity: quantities[item.id] || 1,
           })),
           userEmail: userEmail,
-          isGift: isGift, // Send gift status
-          recipientName: isGift ? recipientName : null, // Send recipient name if it's a gift
-          recipientEmail: isGift ? recipientEmail : null, // Send recipient email if it's a gift
+          isGift: isGift,
+          recipientName: isGift ? recipientName : null,
+          recipientEmail: isGift ? recipientEmail : null,
+          recipientAddress: isGift ? recipientAddress : null,
         }),
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(`HTTP error! status: ${response.status} - ${errorText}`);
         throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
 
       const paymentResult = await response.json();
 
-      // Check for payment error or success
       if (paymentResult.error) {
         setErrorMessage(paymentResult.error);
       } else {
-        setShowThankYouMessage(true); // Show thank you message on success
-        clearCart(); // Clear the cart after successful payment
+        setShowThankYouMessage(true);
+        clearCart();
       }
     } catch (error) {
-      console.error('Error during payment:', error);
       setErrorMessage(error.message);
     } finally {
       setIsProcessing(false);
@@ -105,47 +107,54 @@ function CheckoutForm() {
   return (
     <div className={showThankYouMessage ? 'checkout-page blur-background' : 'checkout-page'}>
       <form onSubmit={handleSubmit} className="checkout-form">
-        <h2>Your Cart</h2>
+        <h2>{t.yourCart}</h2>
         <ul className="checkout-items">
           {cartItems.map((item) => (
             <li key={item.id}>
               <span>{item.name}</span> - <strong>${item.price.toFixed(2)}</strong>
               <div className="quantity-controls">
                 <button type="button" onClick={() => handleQuantityChange(item.id, -1)} className="checkout-page-button">-</button>
-                <span>Quantity: {quantities[item.id] || 1}</span>
+                <span>{t.quantity}: {quantities[item.id] || 1}</span>
                 <button type="button" onClick={() => handleQuantityChange(item.id, 1)} className="checkout-page-button">+</button>
               </div>
             </li>
           ))}
         </ul>
-        <div className="total-price">Total Price: <strong>${totalPrice.toFixed(2)}</strong></div>
+        <div className="total-price">{t.totalPrice}: <strong>${totalPrice.toFixed(2)}</strong></div>
 
-        {/* Gift option */}
         <div className="gift-option">
           <label>
-            <input 
-              type="checkbox" 
-              checked={isGift} 
-              onChange={() => setIsGift(!isGift)} 
+            <input
+              type="checkbox"
+              checked={isGift}
+              onChange={() => setIsGift(!isGift)}
             />
-            Gift this order
+            {t.giftOrder}
           </label>
           {isGift && (
             <div>
-              <input 
-                type="text" 
-                placeholder="Recipient's Name" 
-                value={recipientName} 
-                onChange={(e) => setRecipientName(e.target.value)} 
-                required 
+              <input
+                type="text"
+                placeholder={t.recipientName}
+                value={recipientName}
+                onChange={(e) => setRecipientName(e.target.value)}
+                required
                 className="gift-input"
               />
-              <input 
-                type="email" 
-                placeholder="Recipient's Email" 
-                value={recipientEmail} 
-                onChange={(e) => setRecipientEmail(e.target.value)} 
-                required 
+              <input
+                type="email"
+                placeholder={t.recipientEmail}
+                value={recipientEmail}
+                onChange={(e) => setRecipientEmail(e.target.value)}
+                required
+                className="gift-input"
+              />
+              <input
+                type="address"
+                placeholder={t.recipientAddress}
+                value={recipientAddress}
+                onChange={(e) => setRecipientAddress(e.target.value)}
+                required
                 className="gift-input"
               />
             </div>
@@ -154,7 +163,7 @@ function CheckoutForm() {
 
         <CardElement className="card-element" />
         <button type="submit" disabled={!stripe || isProcessing} className="checkout-page-submit-button">
-          {isProcessing ? 'Processing...' : 'Pay Now'}
+          {isProcessing ? t.processing : t.payNow}
         </button>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
       </form>
@@ -162,12 +171,12 @@ function CheckoutForm() {
       {showThankYouMessage && (
         <div className="checkout-page-overlay">
           <div className="checkout-page-thank-you-modal">
-            <h2>Thank you for shopping with Hemimerce!</h2>
-            <h4>Your order will be shipped within a week.</h4>
-            <p>Would you like to continue browsing our store or find more products?</p>
+            <h2>{t.thankYou}</h2>
+            <h4>{t.shippingMessage}</h4>
+            <p>{t.continueBrowsing}</p>
             <div className="checkout-page-button-container">
-              <button onClick={() => window.location.href = '/'} className="checkout-page-button">Back to Home</button>
-              <button onClick={() => window.location.href = '/products'} className="checkout-page-button">Back to Products</button>
+              <button onClick={() => window.location.href = '/'} className="checkout-page-button">{t.backToHome}</button>
+              <button onClick={() => window.location.href = '/products'} className="checkout-page-button">{t.backToProducts}</button>
             </div>
           </div>
         </div>
@@ -177,10 +186,14 @@ function CheckoutForm() {
 }
 
 function CheckoutPage() {
+  const { language, switchLanguage } = useLanguage(); // Language switching
   return (
     <div className="checkout-container">
       <NavBar />
-      <h1>Checkout</h1>
+      <h1>{translations[language].checkoutTitle}</h1>
+      <button onClick={switchLanguage} className="language-switch-button">
+        {language === 'en' ? 'FR' : 'EN'}
+      </button>
       <Elements stripe={stripePromise}>
         <CheckoutForm />
       </Elements>
@@ -189,3 +202,4 @@ function CheckoutPage() {
 }
 
 export default CheckoutPage;
+

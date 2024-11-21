@@ -12,7 +12,7 @@
     z-index: 1000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-  
+
 .cart-container {
     position: relative;
 }
@@ -20,36 +20,52 @@
 .cart-button {
     font-size: 1.5rem;
     margin-right: 20px;
-    padding: 10px 15px;
+    padding: 12px 16px; /* Increased padding for better clickability */
     background-color: #333;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px; /* Slightly rounded edges */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added smooth transition */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold; /* Bold font for emphasis */
+    position: relative;
 }
 
 .cart-button:hover {
     background-color: #555; /* Darker hover effect */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.cart-button:focus {
+    outline: none; /* Removes the default focus outline */
+    box-shadow: 0 0 5px 3px rgba(255, 255, 255, 0.6); /* Subtle glow effect on focus */
+}
+
+.cart-button .cart-icon {
+    margin-right: 8px; /* Space between icon and text */
 }
 
 .cart-dropdown {
     position: absolute;
     top: 40px;
     right: 0;
-    width: 200px;
+    width: 250px; /* Wider dropdown */
     background-color: #fff;
     color: #000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     z-index: 1000;
     padding: 10px;
+    font-size: 14px; /* Font size adjusted for readability */
 }
 
 .cart-item {
     display: flex;
     justify-content: space-between;
-    padding: 5px 0;
+    padding: 8px 0; /* Increased padding for better readability */
     border-bottom: 1px solid #ddd;
 }
 
@@ -153,14 +169,15 @@
 }
 
 .products-button {
-    padding: 10px 15px;
+    padding: 10px 10px;
     background-color: #1FC180;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-right: 20px;
+    margin-right: 10px;
     transition: background-color 0.3s ease;
+    font-weight: bold;
 }
 
 .products-button:hover {
@@ -242,7 +259,6 @@
     padding-bottom: 5px;
 }
 
-
 /* Proceed to Checkout button */
 .checkout-button {
     background-color: #1FC180;
@@ -254,14 +270,14 @@
     margin-top: 10px;
     width: 100%;
     transition: background-color 0.3s;
-  }
-  
-  .checkout-button:hover {
+}
+
+.checkout-button:hover {
     background-color: #17a974; /* Darker green on hover */
-  }
-  
-  /* Edit Account button */
-  .edit-account-button {
+}
+
+/* Edit Account button */
+.edit-account-button {
     background-color: #007bff; /* Blue background */
     color: white;
     padding: 10px 15px;
@@ -271,28 +287,140 @@
     margin-top: 10px;
     width: 100%;
     transition: background-color 0.3s;
-  }
-  
-  .edit-account-button:hover {
+}
+
+.edit-account-button:hover {
     background-color: #0056b3; /* Darker blue on hover */
-  }
-  .orders-button {
+}
+
+.orders-button {
     background-color: black; /* Bootstrap primary color */
     color: white; /* Text color */
     border: none; /* No border */
-    padding: 10px 15px; /* Padding */
+    padding: 10px 10px; /* Padding */
     border-radius: 5px; /* Rounded corners */
     cursor: pointer; /* Pointer cursor on hover */
     transition: background-color 0.3s ease; /* Smooth transition */
-    font-size: 16px; /* Font size */
+    font-size: 14px; /* Font size */
+    font-weight: bold;
     margin-right: 10px;
+    margin-left: 10px;
+}
+
+.orders-button:hover {
+    background-color: rgb(54, 0, 111); /* Darker shade on hover */
+}
+
+.navbar-sales-button {
+    background-color: #ff0000; /* Gold color for emphasis */
+    color: #fff;
+    padding: 8px 16px;
+    border: auto;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-color: white;
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    font-weight: bold;
   }
   
-  .orders-button:hover {
-    background-color: indigo; /* Darker shade on hover */
+  .navbar-sales-button:hover {
+    background-color: #a00000;
+    transform: scale(1.05); /* Slight zoom effect on hover */
   }
+
+/* Wishlist button styling */
+.wishlist-button {
+    font-size: 1rem;
+    margin-right: 20px;
+    padding: 12px 14px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    position: relative;
+}
+
+.wishlist-button:hover {
+    background-color: #7a0787;
+    transform: scale(1.02);
+}
+
+.wishlist-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px 3px rgba(255, 255, 255, 0.6);
+}
+
+/* Wishlist dropdown styling */
+.wishlist-dropdown {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 250px;
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    padding: 10px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 300px;
+    overflow-y: auto; /* Scrollable if items overflow */
+}
+
+.wishlist-dropdown p {
+    text-align: center;
+    padding: 10px;
+    color: #999;
+}
+
+.wishlist-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
+
+.wishlist-item .item-name {
+    flex: 1;
+}
+
+.wishlist-item .remove-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.wishlist-item .remove-button:hover {
+    background-color: #ff4c4c;
+}
+
+.wishlist-dropdown .empty-message {
+    text-align: center;
+    color: #999;
+    padding: 20px 0;
+}
   
+.remove-wishlist-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
 
-
-
+  
   

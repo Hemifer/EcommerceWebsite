@@ -8,7 +8,6 @@ import { useLanguage } from '../context/LanguageContext'; // Import useLanguage
 import { translations } from '../context/translations'; // Import translations
 import './KitchenwarePage.css'; 
 
-// Exporting kitchenwareProducts for potential use elsewhere
 export const kitchenwareProducts = [
   { id: 1, name: "Chef's Knife", price: 59.99, image: "https://via.placeholder.com/150", description: "A versatile knife for chopping, slicing, and dicing." },
   { id: 2, name: "Non-stick Pan", price: 45.99, image: "https://via.placeholder.com/150", description: "A high-quality non-stick pan for all your frying needs." },
@@ -64,6 +63,8 @@ function KitchenwarePage() {
 }
 
 export default KitchenwarePage;
+
+
 
 
 

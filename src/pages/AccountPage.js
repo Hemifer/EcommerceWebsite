@@ -22,8 +22,8 @@ const AccountPage = () => {
     const [showPopup, setShowPopup] = useState(false);
 
     const navigate = useNavigate();
-    const { language } = useLanguage(); // Access the current language
-    const t = translations[language]; // Fetch translations for the current language
+    const { language } = useLanguage();
+    const t = translations[language];
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -52,7 +52,7 @@ const AccountPage = () => {
         });
 
         return () => unsubscribe();
-    }, [t.genericError]);
+    }, [language]);
 
     const handleEdit = (field) => {
         setEditingField(field);
@@ -122,7 +122,6 @@ const AccountPage = () => {
     return (
         <>
             <Navbar />
-
             <div className="accountinfo-profile">
                 {currentUser.photoURL ? (
                     <img src={currentUser.photoURL} alt={t.profilePic} className="accountinfo-profile-img" />
@@ -133,7 +132,6 @@ const AccountPage = () => {
                     {t.changeProfilePicture}
                 </button>
             </div>
-
             {showPopup && (
                 <div className="accountpage-popup-container">
                     <div className="accountpage-popup-content">
@@ -148,7 +146,6 @@ const AccountPage = () => {
                     </div>
                 </div>
             )}
-
             <h1 className="accountinfo-h1">{t.accountPageTitle}</h1>
             {userInfo ? (
                 <div className="accountinfo-details">
@@ -235,11 +232,11 @@ const AccountPage = () => {
             ) : (
                 <p>{t.loadingCart}</p>
             )}
-
             <Footer />
         </>
     );
 };
 
 export default AccountPage;
+
 
