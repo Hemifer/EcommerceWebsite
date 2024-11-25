@@ -52,38 +52,43 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (item) => {
         if (!currentUser) return;
+        
+        // Ensure price is always a valid number
+        const priceToUse = item.onSale ? item.discountedPrice : item.price;
+        
+        // Check if priceToUse is a valid number
+        if (isNaN(priceToUse)) {
+            console.error('Invalid price:', priceToUse);
+            return;
+        }
     
         const itemInCart = cartItems.find(cartItem => cartItem.id === item.id);
     
         if (itemInCart) {
-            console.log("Item already in cart, updating quantity:", item);
             const itemRef = ref(db, `users/${currentUser.uid}/cart/items/${item.id}`);
             const updatedItem = {
                 ...itemInCart,
-                quantity: (itemInCart.quantity || 1) + 1 // Increase quantity
+                quantity: (itemInCart.quantity || 1) + 1,
+                price: priceToUse // Update price in cart
             };
-            set(itemRef, updatedItem) // Update the item in the database
-                .then(() => {
-                    setCartItems(prevItems => prevItems.map(cartItem => 
-                        cartItem.id === item.id ? updatedItem : cartItem
-                    )); // Update local state
-                })
+            set(itemRef, updatedItem)
                 .catch((error) => {
-                    console.error("Error updating item quantity:", error);
+                    console.error('Error updating item in cart:', error);
                 });
-            return; 
+            return;
         }
     
         const cartRef = ref(db, `users/${currentUser.uid}/cart/items/${item.id}`);
-        set(cartRef, { ...item, quantity: 1 }) // Set the item in the database with initial quantity
+        set(cartRef, { ...item, quantity: 1, price: priceToUse }) // Ensure price is set
             .then(() => {
                 setCartItems((prevItems) => [...prevItems, { ...item, quantity: 1 }]); // Update local state
-                console.log("Item added to cart:", item);
+                console.log('Item added to cart:', item);
             })
             .catch((error) => {
-                console.error("Error adding item to cart:", error);
+                console.error('Error adding item to cart:', error);
             });
     };
+    
 
     const removeFromCart = (itemId) => {
         if (!currentUser) return;

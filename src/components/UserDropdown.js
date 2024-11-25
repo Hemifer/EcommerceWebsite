@@ -24,7 +24,6 @@ function UserDropdown({ currentUser, userInfoVisible, handleSignOut }) {
     </div>
   );
 }
-
 export default UserDropdown;
 
 

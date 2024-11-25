@@ -3,8 +3,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 10px;
-    width: 98.7%; /* Prevent overflow */
-    background-color: #C11F60;
+    width: 98.7%; 
+    background-color: #2f007b;
     color: #fff;
     position: fixed;
     top: 0;
@@ -308,7 +308,7 @@
 }
 
 .orders-button:hover {
-    background-color: rgb(54, 0, 111); /* Darker shade on hover */
+    background-color: rgb(84, 0, 59); /* Darker shade on hover */
 }
 
 .navbar-sales-button {
@@ -422,5 +422,72 @@
     cursor: pointer;
 }
 
+.navbar-item.on-sale {
+    color: red;  /* Change color to indicate sale */
+  }
   
+.sale-indicator {
+    color: red;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/* Positioning the on-sale container within the Navbar */
+.onsale-container {
+    position: absolute;
+    top: 100%; /* Keep dropdown below the button */
+    left: 0;
+    right: 0;
+    width: max-content;
+    max-width: 200px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+/* Individual product container inside the dropdown */
+.onsale-product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    gap: 10px;
+    background-color: #333; /* Dark background for the items */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.onsale-product:hover {
+    background-color: #444; /* Lighten on hover */
+}
+
+.onsale-product-name {
+    font-weight: bold;
+    color: #ffee00; /* Bright color for product name */
+    font-size: 14px;
+    flex: 1;
+}
+
+.onsale-product-price {
+    font-size: 12px;
+    color: #ffee00; /* Price in yellow */
+    font-weight: bold;
+}
+
+/* Message when there are no products on sale */
+.no-sale-items {
+    text-align: center;
+    font-size: 14px;
+    color: #ccc;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+
+
+  
+
   

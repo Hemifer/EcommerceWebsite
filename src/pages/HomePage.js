@@ -59,7 +59,7 @@ function HomePage() {
           <button
             key={product.id}
             className="productCard"
-            onClick={() => navigate(`/products/${product.id}`)}
+            onClick={() => navigate(`/product/${product.id}`)}
           >
             <img src={product.image} alt={product.name} />
             <h3>{product.name}</h3>

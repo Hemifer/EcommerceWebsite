@@ -5,10 +5,10 @@ import { auth } from './firebase';
 import { CartProvider } from './context/CartContext';
 import { UserProvider } from './context/UserContext';
 import { LanguageProvider } from './context/LanguageContext';
-import ProductsProvider from './context/ProductsContext';
-import WishlistProvider from './context/WishlistContext';  // Default import
-  // Default import
- // Import WishlistProvider
+import { ProductsProvider } from './context/ProductsContext';
+import WishlistProvider from './context/WishlistContext';
+import { OnSaleProvider } from './context/OnSaleContext'; // Import OnSaleProvider
+
 import HomePage from './pages/HomePage';
 import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
@@ -19,61 +19,60 @@ import CheckoutPage from './pages/CheckoutPage';
 import AccountPage from './pages/AccountPage';
 import OrdersPage from './pages/OrdersPage';
 import Footer from './components/Footer';
-import Navbar from './components/Navbar'; 
-
+import Navbar from './components/Navbar';
 
 function App() {
-  const location = useLocation(); // Hook to get the current location
-  const [showFooter, setShowFooter] = useState(true); // Default to showing the footer
+  const location = useLocation();
+  const [showFooter, setShowFooter] = useState(true);
 
-  // Determine if footer should be hidden based on the route
+  // Update footer visibility based on routes
   useEffect(() => {
     const footerHiddenRoutes = ['/login', '/signup'];
     setShowFooter(!footerHiddenRoutes.includes(location.pathname));
   }, [location.pathname]);
 
-  // Authentication listener
+  // Listen for Firebase authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log('User is authenticated:', user.uid);
-      } else {
-        console.log('User is not authenticated');
-      }
+      console.log(user ? `User: ${user.uid}` : 'No user signed in');
     });
-
-    return () => unsubscribe(); // Cleanup the subscription
+    return () => unsubscribe();
   }, []);
 
   return (
     <div className="app-container">
-      <Navbar /> {/* Add the Navbar to the app */}
+      {/* Navbar remains consistent across all pages */}
+      <Navbar />
+      {/* Define application routes */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/kitchenware" element={<KitchenwarePage />} />
         <Route path="/toys" element={<ToysPage />} />
-        <Route path="/products/:id" element={<ProductDetail />} />
+        <Route path="/product/:id" element={<ProductDetail />} /> {/* Product detail route */}
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/orders" element={<OrdersPage />} />
       </Routes>
-      {showFooter && <Footer />} 
+      {/* Conditionally render footer */}
+      {showFooter && <Footer />}
     </div>
   );
 }
 
-// Wrap App with necessary providers
 export default function WrappedApp() {
   return (
     <Router>
+      {/* Wrap the app with necessary context providers */}
       <LanguageProvider>
         <UserProvider>
           <CartProvider>
-            <ProductsProvider> {/* Wrap the App with ProductsProvider */}
-              <WishlistProvider> {/* Wrap with WishlistProvider */}
-                <App />
+            <ProductsProvider>
+              <WishlistProvider>
+                <OnSaleProvider> {/* Wrap with OnSaleProvider */}
+                  <App />
+                </OnSaleProvider>
               </WishlistProvider>
             </ProductsProvider>
           </CartProvider>
@@ -82,6 +81,9 @@ export default function WrappedApp() {
     </Router>
   );
 }
+
+
+
 
 
 

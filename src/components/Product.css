@@ -1,42 +1,65 @@
 .product-card {
-  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 15px;
   text-align: center;
+  cursor: pointer;
+  position: relative; /* For positioning the on-sale label */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 15px;
-  border-radius: 4px;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
 }
 
 .product-name {
-  font-size: 1.25rem;
-  color: #333;
+  font-size: 18px;
+  font-weight: bold;
   margin-bottom: 10px;
 }
 
 .product-price {
-  font-size: 1.1rem;
+  font-size: 16px;
+  color: #333;
+}
+
+.product-price .original-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 8px;
+}
+
+.product-price .sale-price {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.product-description {
+  font-size: 14px;
   color: #555;
-  margin-bottom: 15px;
+  margin-top: 10px;
 }
 
-.product-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
+.onsalelabel {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  left: 10px;
   border-radius: 5px;
-  cursor: pointer;
+  font-size: 12px;
 }
 
-.product-button:hover {
-  background-color: #0056b3;
-}
 
 
   

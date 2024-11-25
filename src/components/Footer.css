@@ -9,22 +9,42 @@
   left: 0; /* Align to the left */
   z-index: 10; /* Ensure it appears above other content */
   height: 50px; /* This allows for the footer height to adjust based on content */
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space out the content */
+  align-items: center; /* Center the content vertically */
 }
 
-
 .footer-text {
-  margin-bottom: -20px;
+  margin: 0;
 }
 
 .footer-help-button {
   padding: 7px 10px;
-  background-color: #5100d4;
+  background-color: #5100d4; /* Original button color */
   color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  float: left;
 }
+
+.footer-help-button:hover {
+  background-color: #3a00a3; /* Darker shade for hover effect */
+}
+
+.footer-share-button {
+  padding: 7px 10px;
+  background-color: #5100d4; /* Indigo color for the Share button */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 30px;
+}
+
+.footer-share-button:hover {
+  background-color: #3a00a3; /* Slightly darker indigo for hover effect */
+}
+
 
 
   

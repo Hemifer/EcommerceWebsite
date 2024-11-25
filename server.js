@@ -37,7 +37,7 @@ const transporter = nodemailer.createTransport({
 
 // Function to send an email receipt
 async function sendEmailReceipt(userEmail, cartItems, totalAmount, orderId) {
-  const itemsList = cartItems.map(item => `${item.name} (x${item.quantity})`).join(', ');
+  const itemsList = cartItems.map(item => `${item.name} (x${item.quantity}) - $${(item.price / 100).toFixed(2)}`).join(', ');
   const cancelOrderLink = `http://localhost:5000/api/cancel-order/${orderId}`;
   const mailOptions = {
     from: 'no-reply@example.com',
@@ -86,9 +86,9 @@ async function sendGiftConfirmation(recipientEmail, recipientName, orderId, cart
   }
 }
 
-// Function to calculate the total amount based on cart items
+// Function to calculate the total amount based on cart items (including sale price)
 function calculateTotalAmount(cartItems) {
-  return Math.round(cartItems.reduce((total, item) => total + item.price * item.quantity, 0) * 100);
+  return Math.round(cartItems.reduce((total, item) => total + item.salePrice * item.quantity, 0) * 100);  // Use salePrice instead of regular price
 }
 
 // Handle payment creation
@@ -105,7 +105,7 @@ app.post('/create-payment-intent', async (req, res) => {
       automatic_payment_methods: { enabled: true },
     });
 
-    // Save order in Firebase
+    // Save order in Firebase (include sale prices)
     await set(ref(db, `orders/${orderId}`), {
       status: 'pending', // Set status as pending for gifts
       userEmail: userEmail,
@@ -219,8 +219,8 @@ app.get('/api/cancel-order/:orderId', async (req, res) => {
     const cancelMailOptions = {
       from: 'no-reply@example.com',
       to: userEmail,
-      subject: 'Order Cancelled',
-      text: `Your order with ID: ${orderId} has been cancelled. Items ordered: ${orderData.cartItems.map(item => `${item.name} (x${item.quantity})`).join(', ')}`,
+      subject: 'Order Canceled',
+      text: `Your order with ID: ${orderId} has been canceled.`,
     };
 
     await transporter.sendMail(cancelMailOptions);
@@ -232,6 +232,8 @@ app.get('/api/cancel-order/:orderId', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
+// Start server
+const port = 5000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});

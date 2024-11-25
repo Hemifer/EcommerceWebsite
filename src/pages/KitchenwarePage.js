@@ -1,12 +1,11 @@
-// src/pages/KitchenwarePage.js
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Product from '../components/Product';
-import { CartContext } from '../context/CartContext';
-import { useLanguage } from '../context/LanguageContext'; // Import useLanguage
-import { translations } from '../context/translations'; // Import translations
-import './KitchenwarePage.css'; 
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../context/translations';
+import { useOnSale } from '../context/OnSaleContext'; // Import OnSaleContext
+import Product from '../components/Product'; // Import Product component
+import './KitchenwarePage.css';
 
 export const kitchenwareProducts = [
   { id: 1, name: "Chef's Knife", price: 59.99, image: "https://via.placeholder.com/150", description: "A versatile knife for chopping, slicing, and dicing." },
@@ -29,50 +28,46 @@ export const kitchenwareProducts = [
   { id: 18, name: "Dutch Oven", price: 139.99, image: "https://via.placeholder.com/150", description: "Heavy-duty pot for slow cooking." },
   { id: 19, name: "Wine Glass Set", price: 24.99, image: "https://via.placeholder.com/150", description: "Set of 6 elegant wine glasses." },
   { id: 20, name: "Dish Rack", price: 29.99, image: "https://via.placeholder.com/150", description: "Keeps your dishes organized and dry." },  
-];
+  ];
 
-function KitchenwarePage() {
-  const navigate = useNavigate();
-  const { cartItems, addToCart } = useContext(CartContext);
-  const { language } = useLanguage(); // Get current language
-  const t = translations[language]; // Get translations based on current language
-
-  const handleBackToHome = () => {
-    navigate('/'); 
-  };
-
-  return (
-    <div>
-      <Navbar />
+  export function KitchenwarePage() {
+    const navigate = useNavigate();
+    const { language } = useLanguage(); // Current language
+    const t = translations[language];
+    const { onSaleProduct } = useOnSale(); // Translations based on language
+  
+    const handleProductClick = (id) => {
+      navigate(`/products/${id}`, { state: { category: 'kitchenware' } });
+    };
+  
+    const handleBackToHome = () => {
+      navigate('/');
+    };
+  
+    return (
       <div className="products-container">
-        <button onClick={handleBackToHome} className="products-backButton">{t.backToHome}</button>
+        <Navbar />
+        <button onClick={handleBackToHome} className="products-backButton">
+          {t.backToHome}
+        </button>
         <h1 className="products-header">{t.kitchenwareHeader}</h1>
         <div className="products-grid">
-          {kitchenwareProducts.map(product => (
-            <Product 
-              key={product.id} 
-              product={product} 
-              addToCart={addToCart}
-              isInCart={cartItems.some(item => item.id === product.id)}
-            />
-          ))}
+          {kitchenwareProducts.map((product) => {
+            const isOnSale = onSaleProduct && onSaleProduct.id === product.id;
+            return (
+              <Product
+                key={product.id}
+                product={{
+                  ...product,
+                  onSale: isOnSale,
+                  salePrice: isOnSale ? onSaleProduct.salePrice : undefined,
+                }}
+              />
+            );
+          })}
         </div>
       </div>
-    </div>
-  );
-}
-
-export default KitchenwarePage;
-
-
-
-
-
-
-
-
-
-
-
-
-
+    );
+  }
+  
+  export default KitchenwarePage;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { CartContext } from '../context/CartContext';
 import { loadStripe } from '@stripe/stripe-js';
 import NavBar from '../components/Navbar';
@@ -6,12 +6,10 @@ import { Elements, CardElement, useStripe, useElements } from '@stripe/react-str
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../context/translations';
 import './CheckoutPage.css';
-import showFooter  from '../App'
 
 const stripePromise = loadStripe('pk_test_51Q2fPBRqC36KgL0FILN6uZLGFXCOgF7Wtf2NfehVGybcqk1lj4o4uI3aUBNYbqqByqvHdsfNRlXgoMLXhsRkFIuw006IciA3aj');
 
 function CheckoutForm() {
-  showFooter = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const { cartItems, removeFromCart, clearCart } = useContext(CartContext);
@@ -27,6 +25,9 @@ function CheckoutForm() {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
   const [isGift, setIsGift] = useState(false);
+
+  const [isPaymentDelayed, setIsPaymentDelayed] = useState(false); // Track delayed payment
+  const [paymentStatus, setPaymentStatus] = useState(null);
 
   const handleQuantityChange = (itemId, amount) => {
     setQuantities((prevQuantities) => {
@@ -46,20 +47,25 @@ function CheckoutForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsProcessing(true);
-
+  
+    const timeout = setTimeout(() => {
+      setIsPaymentDelayed(true); // Show low connection message after 15 seconds
+    }, 15000); // 15 seconds delay
+  
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
     });
-
+  
     if (error) {
       setErrorMessage(error.message);
       setIsProcessing(false);
+      clearTimeout(timeout); // Clear timeout if payment fails early
       return;
     }
-
+  
     try {
-      const userEmail = 'pistillityler@icloud.com';
+      const userEmail = 'pistillityler@icloud.com'; // Replace with actual user email
       const response = await fetch('http://localhost:5000/create-payment-intent', {
         method: 'POST',
         headers: {
@@ -70,6 +76,7 @@ function CheckoutForm() {
           cartItems: cartItems.map((item) => ({
             ...item,
             quantity: quantities[item.id] || 1,
+            price: item.price, // Pass the regular price, excluding sale price
           })),
           userEmail: userEmail,
           isGift: isGift,
@@ -78,17 +85,18 @@ function CheckoutForm() {
           recipientAddress: isGift ? recipientAddress : null,
         }),
       });
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
-
+  
       const paymentResult = await response.json();
-
+  
       if (paymentResult.error) {
         setErrorMessage(paymentResult.error);
       } else {
+        setPaymentStatus('succeeded'); // Set payment status
         setShowThankYouMessage(true);
         clearCart();
       }
@@ -96,22 +104,37 @@ function CheckoutForm() {
       setErrorMessage(error.message);
     } finally {
       setIsProcessing(false);
+      clearTimeout(timeout); // Clear timeout when process is completed
     }
   };
 
+  // Calculate total price using regular price
   const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * (quantities[item.id] || 1),
+    (total, item) => {
+      const price = item.price;
+      const quantity = quantities[item.id] || 1;
+      return total + (price && quantity ? price * quantity : 0);
+    },
     0
   );
 
+  useEffect(() => {
+    cartItems.forEach((item) => {
+      console.log(`Cart Item: ${item.name}, Price: ${item.price}, Sale Price: ${item.salePrice}, On Sale: ${item.onSale}`);
+    });
+  }, [cartItems]);
+
   return (
-    <div className={showThankYouMessage ? 'checkout-page blur-background' : 'checkout-page'}>
+    <div className={showThankYouMessage ? 'checkout-container blur-background' : 'checkout-container'}>
       <form onSubmit={handleSubmit} className="checkout-form">
         <h2>{t.yourCart}</h2>
         <ul className="checkout-items">
           {cartItems.map((item) => (
             <li key={item.id}>
-              <span>{item.name}</span> - <strong>${item.price.toFixed(2)}</strong>
+              <span>{item.name}</span> - 
+              <strong>
+                ${item.price.toFixed(2)} {/* Show regular price only */}
+              </strong>
               <div className="quantity-controls">
                 <button type="button" onClick={() => handleQuantityChange(item.id, -1)} className="checkout-page-button">-</button>
                 <span>{t.quantity}: {quantities[item.id] || 1}</span>
@@ -168,6 +191,12 @@ function CheckoutForm() {
         {errorMessage && <div className="error-message">{errorMessage}</div>}
       </form>
 
+      {isPaymentDelayed && !paymentStatus && (
+        <div className="low-connection-message">
+          <p>{t.lowConnectionMessage}</p>
+        </div>
+      )}
+
       {showThankYouMessage && (
         <div className="checkout-page-overlay">
           <div className="checkout-page-thank-you-modal">
@@ -176,7 +205,7 @@ function CheckoutForm() {
             <p>{t.continueBrowsing}</p>
             <div className="checkout-page-button-container">
               <button onClick={() => window.location.href = '/'} className="checkout-page-button">{t.backToHome}</button>
-              <button onClick={() => window.location.href = '/products'} className="checkout-page-button">{t.backToProducts}</button>
+              <button onClick={() => window.location.href = '/products'} className="checkout-page-button">{t.shopAgain}</button>
             </div>
           </div>
         </div>
@@ -186,14 +215,9 @@ function CheckoutForm() {
 }
 
 function CheckoutPage() {
-  const { language, switchLanguage } = useLanguage(); // Language switching
   return (
-    <div className="checkout-container">
+    <div className="checkout-page-container">
       <NavBar />
-      <h1>{translations[language].checkoutTitle}</h1>
-      <button onClick={switchLanguage} className="language-switch-button">
-        {language === 'en' ? 'FR' : 'EN'}
-      </button>
       <Elements stripe={stripePromise}>
         <CheckoutForm />
       </Elements>
@@ -202,4 +226,11 @@ function CheckoutPage() {
 }
 
 export default CheckoutPage;
+
+
+
+
+
+
+
 

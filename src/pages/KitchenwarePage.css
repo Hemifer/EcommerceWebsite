@@ -33,4 +33,36 @@
 }
 
 
+.product-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.product-description {
+    font-size: 14px;
+    color: #555;
+}
+
+
+
 

@@ -1,0 +1,5 @@
+"npm start"
+
+then 
+
+"node server.js" 

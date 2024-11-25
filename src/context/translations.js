@@ -98,7 +98,8 @@ export const translations = {
         onSale: 'On Sale',
         noSaleItems: 'No items on sale.',
         recipientAddress: 'Recipeint\'s Address',
-        productPageWishlist: 'Add to Wishlist'
+        productPageWishlist: 'Add to Wishlist',
+        shareWebsite: 'Share Website!',
     },
     fr: {
         // French translations
@@ -199,6 +200,7 @@ export const translations = {
         noSaleItems: 'Aucun article en solde.',
         recipientAddress: 'Address du destinataire',
         productPageWishlist: 'Ajouter au Wishlist',
+        shareWebsite: 'Partager le site!'
     },
 };
 
